@@ -1,0 +1,39 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.bg-image {
+  width: 100%;
+  border-radius: 0px 10px 10px 0px;
+}
+
+.bg-image-col {
+  padding: 0;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border-radius: 0;
+  background-size: cover;
+}
+
+.modal-login {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 0;
+}
+
+.jumbotron {
+  background-image: url("../../assets/images/backgrounds/Opening-flagshipstore-Coolblue-in-Brussel18622-scaled.jpeg");
+}
+
+.custom {
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+}

@@ -1,0 +1,66 @@
+body { padding-top: 10px; }
+
+.bg-image {
+  width: 100%;
+  border-radius: 10px 10px 10px 10px;
+  background-image: url("../../assets/images/backgrounds/binnenkant-4.png");
+}
+
+.bg-image-col {
+  padding: 0;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border-radius: 0;
+  background-size: cover;
+}
+
+.modal-login {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 0;
+}
+
+.box {
+  background-color: white;
+  padding-bottom: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.box-shadow{
+  padding-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 0;
+}
+
+.fw {
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background-color: mediumseagreen;
+  border-top-color: mediumseagreen;
+  border-right-color: mediumseagreen;
+  border-left-color: mediumseagreen;
+  border-bottom: 3px solid #37A166;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.thumbnail {
+  height: 100%;
+}
+
+.mb {
+  margin-bottom: 20px;
+}

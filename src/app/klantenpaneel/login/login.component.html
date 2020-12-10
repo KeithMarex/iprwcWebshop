@@ -1,0 +1,24 @@
+<div style="text-align: center;">
+  <h1>Klantenportaal</h1>
+  <p>Hier kunt u veilig inloggen op uw Koenblue account.</p>
+</div>
+
+<form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
+  <label for="title">Email</label>
+  <div class="form-group mb3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email"/>
+  </div>
+  <label for="content">Wachtwoord</label>
+  <div class="form-group mb-3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="content" required ngModel name="password"/>
+  </div>
+  <br>
+
+  <div class="row clearfix das">
+    <div class="col-sm-3 no-padding"><button type="button" class="btn btn-light btn-lg btn-block" (click)="viewPass()">Wachtwoord vergeten?</button></div>
+    <div class="col-sm-3 text-right float-right"><button type="submit" class="btn btn-lg btn-block" [ngClass]="{'login-active': postForm.valid}" [disabled]="!postForm.valid">Login</button></div>
+    <div class="col-sm-3 no-padding"><button type="button" class="btn btn-light btn-lg btn-block" (click)="viewPass()">Registreren</button></div>
+  </div>
+</form>
+<br>
+

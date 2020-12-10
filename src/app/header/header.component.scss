@@ -1,0 +1,38 @@
+.vc {
+  line-height: 50px;
+}
+
+.zero-margin {
+  margin: 0;
+  padding: 0 15px 0 0;
+  margin: 0 5px 0 5px;
+}
+
+.zero-margin:hover {
+  cursor: pointer;
+  background-color: cornflowerblue;
+  transition: background-color 0.5s ease;
+}
+
+.breed {
+  width: 100%;
+}
+
+.no-border {
+  border: 0;
+}
+
+.cp {
+  cursor: pointer;
+}
+
+.bg-white {
+  background-color: dodgerblue;
+  border: 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+nav {
+  color: white;
+}
+
