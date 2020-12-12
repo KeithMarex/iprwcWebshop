@@ -18,4 +18,8 @@ export class LoginComponent implements OnInit {
     // Send Http request
     this.http.post('localhost:3000/user/checkUserCredentials', postData).subscribe(responseData => {console.log(responseData);});
   }
+
+  viewPass() {
+
+  }
 }

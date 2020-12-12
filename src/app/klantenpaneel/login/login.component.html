@@ -1,16 +1,16 @@
 <div style="text-align: center;">
-  <h1>Klantenportaal</h1>
+  <h1>Koenblue</h1>
   <p>Hier kunt u veilig inloggen op uw Koenblue account.</p>
 </div>
 
-<form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
+<form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center custom-form">
   <label for="title">Email</label>
   <div class="form-group mb3">
     <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email"/>
   </div>
   <label for="content">Wachtwoord</label>
   <div class="form-group mb-3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="content" required ngModel name="password"/>
+    <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="content" required ngModel name="password"/>
   </div>
   <br>
 
