@@ -12,9 +12,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { ShoppingCartListComponent } from './shopping-cart/shopping-cart-list/shopping-cart-list.component';
-import { ProductsComponent } from './products/products.component';
-import { ProductComponent } from './products/product/product.component';
-import {HttpClientModule} from "@angular/common/http";
+// import { ProductsComponent } from './products/products.component';
+// import { ProductComponent } from './products/product/product.component';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   {path: 'klantenpaneel', component: KlantenpaneelComponent},
@@ -31,9 +31,9 @@ const appRoutes: Routes = [
     LoginComponent,
     PasswordForgetComponent,
     ShoppingCartComponent,
-    ShoppingCartListComponent,
-    ProductsComponent,
-    ProductComponent
+    ShoppingCartListComponent
+    // ProductsComponent,
+    // ProductComponent
   ],
   imports: [
     BrowserModule,

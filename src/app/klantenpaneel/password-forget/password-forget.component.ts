@@ -12,4 +12,7 @@ export class PasswordForgetComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  viewLogin(){
+
+  }
 }

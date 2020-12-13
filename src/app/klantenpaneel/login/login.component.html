@@ -1,24 +1,30 @@
-<div style="text-align: center;">
-  <h1>Koenblue</h1>
-  <p>Hier kunt u veilig inloggen op uw Koenblue account.</p>
+<div class="row">
+  <div class="col wd">
+    <div style="text-align: center;">
+      <h1>Login</h1>
+    </div>
+    <form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
+      <label for="title">Email</label>
+      <div class="form-group mb3">
+        <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email"/>
+      </div>
+      <label for="content">Wachtwoord</label>
+      <div class="form-group mb-3">
+        <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="content" required ngModel name="password"/>
+      </div>
+    </form>
+
+    <div class="row clearfix das">
+      <div class="col text-right float-right"><button type="submit" class="btn btn-lg btn-block" [ngClass]="{'login-active': postForm.valid}" [disabled]="!postForm.valid">Login</button></div>
+    </div>
+    <div class="row clearfix das">
+      <div class="col-sm-6 no-padding"><button type="button" class="btn btn-light btn-lg" (click)="viewPass()">Wachtwoord vergeten?</button></div>
+      <div class="col-sm-6 no-padding "><button type="button" class="btn btn-light btn-lg" style="float: right" (click)="viewPass()">Registreren</button></div>
+    </div>
+
+  </div>
+  <div class="col wd2">
+    <img src="assets/images/coolblue.svg" alt="Logo">
+  </div>
 </div>
-
-<form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center custom-form">
-  <label for="title">Email</label>
-  <div class="form-group mb3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email"/>
-  </div>
-  <label for="content">Wachtwoord</label>
-  <div class="form-group mb-3">
-    <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="content" required ngModel name="password"/>
-  </div>
-  <br>
-
-  <div class="row clearfix das">
-    <div class="col-sm-3 no-padding"><button type="button" class="btn btn-light btn-lg btn-block" (click)="viewPass()">Wachtwoord vergeten?</button></div>
-    <div class="col-sm-3 text-right float-right"><button type="submit" class="btn btn-lg btn-block" [ngClass]="{'login-active': postForm.valid}" [disabled]="!postForm.valid">Login</button></div>
-    <div class="col-sm-3 no-padding"><button type="button" class="btn btn-light btn-lg btn-block" (click)="viewPass()">Registreren</button></div>
-  </div>
-</form>
-<br>
 
