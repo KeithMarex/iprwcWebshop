@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Avenir";
+  src: url(../../assets/fonts/avenir/AvenirLTStd-Roman.otf) format("opentype");;
+}
+
+* {
+  font-family: Avenir, serif;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -30,7 +39,7 @@ html, body {
 }
 
 .jumbotron {
-  background-image: url("../../assets/images/backgrounds/Opening-flagshipstore-Coolblue-in-Brussel18622-scaled.jpeg");
+  background-image: url("../../assets/images/backgrounds/Opening-flagshipstore-Coolblue-in-Brussel18622-scaled-min.jpeg");
 }
 
 .custom {

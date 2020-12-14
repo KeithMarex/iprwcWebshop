@@ -1,9 +1,19 @@
+@font-face {
+  font-family: "Avenir";
+  src: url(../../assets/fonts/avenir/AvenirLTStd-Roman.otf) format("opentype");
+}
+
+* {
+  font-family: Avenir, serif;
+}
+
 body { padding-top: 10px; }
 
 .bg-image {
   width: 100%;
   border-radius: 10px 10px 10px 10px;
-  background-image: url("../../assets/images/backgrounds/binnenkant-4.png");
+  background-image: url("../../assets/images/backgrounds/kerstpakketjes.jpg");
+  background-size: cover;
 }
 
 .bg-image-col {
@@ -29,6 +39,7 @@ body { padding-top: 10px; }
 
 .box {
   background-color: white;
+  padding-top: 60px;
   padding-bottom: 0;
 }
 

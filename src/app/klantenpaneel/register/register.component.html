@@ -1,0 +1,43 @@
+<div style="text-align: center;">
+  <h1>Registreren</h1>
+</div>
+<form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
+  <label for="voornaam">Voornaam</label>
+  <div class="form-group mb3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="voornaam" required ngModel name="voornaam"/>
+  </div>
+  <label for="achternaam">Achternaam</label>
+  <div class="form-group mb-3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="achternaam" required ngModel name="achternaam"/>
+  </div>
+  <hr>
+  <label for="email">Email</label>
+  <div class="form-group mb-3">
+    <input type="email" [ngClass]="{'failure': !succes}" class="form-control" id="email" required ngModel name="email"/>
+  </div>
+  <label for="wachtwoord">Wachtwoord</label>
+  <div class="form-group mb-3">
+    <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="wachtwoord" required ngModel name="wachtwoord"/>
+  </div>
+  <hr>
+  <label for="straatnaam">Straatnaam</label>
+  <div class="form-group mb-3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="straatnaam" required ngModel name="straatnaam"/>
+  </div>
+  <label for="huisnummer">Huisnummer</label>
+  <div class="form-group mb-3">
+    <input type="number" [ngClass]="{'failure': !succes}" class="form-control" id="huisnummer" required ngModel name="huisnummer"/>
+  </div>
+  <label for="plaatsnaam">Plaatsnaam</label>
+  <div class="form-group mb-3">
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="plaatsnaam" required ngModel name="plaatsnaam"/>
+  </div>
+
+  <div class="row clearfix das">
+    <div class="col text-right float-right"><button type="submit" class="btn btn-lg btn-block login-active" [disabled]="!postForm.valid">Register</button></div>
+  </div>
+  <hr>
+  <div class="row clearfix das">
+    <div class="col text-right float-right"><button type="button" class="btn btn-light btn-lg" (click)="gaNaarLogin()">Terug</button></div>
+  </div>
+</form>

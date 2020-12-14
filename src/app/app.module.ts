@@ -15,6 +15,7 @@ import { ShoppingCartListComponent } from './shopping-cart/shopping-cart-list/sh
 // import { ProductsComponent } from './products/products.component';
 // import { ProductComponent } from './products/product/product.component';
 import {HttpClientModule} from '@angular/common/http';
+import { RegisterComponent } from './klantenpaneel/register/register.component';
 
 const appRoutes: Routes = [
   {path: 'klantenpaneel', component: KlantenpaneelComponent},
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
     LoginComponent,
     PasswordForgetComponent,
     ShoppingCartComponent,
-    ShoppingCartListComponent
+    ShoppingCartListComponent,
+    RegisterComponent
     // ProductsComponent,
     // ProductComponent
   ],
@@ -39,7 +41,7 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

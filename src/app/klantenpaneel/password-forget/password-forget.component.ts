@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-password-forget',
@@ -6,13 +6,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./password-forget.component.scss']
 })
 export class PasswordForgetComponent implements OnInit {
+  @Output() naarLogin = new EventEmitter();
+
+  succes = true;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  viewLogin(){
+  onFormSubmit(postData: { email: string }) {
+    if (postData.email.includes('@')){
+      // TODO voeg wachtwoord herstel aan via API
+    }
+    // Geef waarschuwing dat er iets fout is gegaan
+    this.succes = false;
+  }
 
+  goToLogin() {
+    this.naarLogin.emit();
   }
 }
