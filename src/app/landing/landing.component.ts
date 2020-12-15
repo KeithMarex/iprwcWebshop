@@ -30,7 +30,7 @@ export class LandingComponent implements OnInit {
 
   voegToeAanCart(product: ProductModel) {
     if (this.conf.user){
-      Swal.fire(product.titel, 'Toegevoegd', 'success');
+      Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success'});
       // TODO Voeg item toe aan winkelwagen
       this.itemCount++;
     } else {
