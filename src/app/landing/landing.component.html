@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [teller]="itemCount"></app-header>
 <body>
   <div class="jumbotron box no-margin">
     <div class="container modal-login">
@@ -13,48 +13,19 @@
   </div>
   <div class="container">
     <hr>
+
     <div class="row no-margin">
-      <div class="col-sm-6 col-md-4 mb">
+      <div class="col-sm-6 col-md-4 mb" *ngFor="let product of products">
         <div class="thumbnail box-shadow">
-          <img src="../../assets/images/phones/iphone_se_128.webp" alt="...">
+          <img src="../../assets/images/phones/{{product.foto_path}}" alt="...">
           <div class="caption">
-            <h3>Apple iPhone SE 128GB Zwart</h3>
-            <p>529,-</p>
-            <p><a href="#" class="btn btn-primary fw" role="button">In mijn winkelwagen</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-4 mb">
-        <div class="thumbnail box-shadow">
-          <img src="assets/images/phones/iphone_12_mini_128.webp" alt="...">
-          <div class="caption">
-            <h3>Apple iPhone 12 mini 128GB Zwart</h3>
-            <p>859,-</p>
-            <p><a href="#" class="btn btn-primary fw" role="button">In mijn winkelwagen</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-4 mb">
-        <div class="thumbnail box-shadow">
-          <img src="assets/images/phones/iphone_11_128.webp" alt="...">
-          <div class="caption">
-            <h3>Apple iPhone 11 128GB Wit</h3>
-            <p>758,-</p>
-            <p><a href="#" class="btn btn-primary fw" role="button">In mijn winkelwagen</a></p>
+            <h3>{{product.titel}}</h3>
+            <p>{{product.prijs}},-</p>
+            <p><a href="#" class="btn btn-primary fw" role="button" (click)="voegToeAanCart(product)">In mijn winkelwagen</a></p>
           </div>
         </div>
       </div>
 
-      <div class="col-sm-6 col-md-4 mb">
-        <div class="thumbnail box-shadow">
-          <img src="assets/images/phones/iphone_11_128.webp" alt="...">
-          <div class="caption">
-            <h3>Apple iPhone 11 128GB Wit</h3>
-            <p>758,-</p>
-            <p><a href="#" class="btn btn-primary fw" role="button">In mijn winkelwagen</a></p>
-          </div>
-        </div>
-      </div>
     </div>
     <hr>
   </div>

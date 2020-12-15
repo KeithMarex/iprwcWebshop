@@ -22,8 +22,8 @@
       <p class="navbar-text" style="color: white">Account</p>
       <i class="fas fa-user fa-2x vc"></i>
     </div>
-    <div class="navbar-nav navbar-right zero-margin">
-      <p class="navbar-text" style="color: white">Winkelwagen</p>
+    <div class="navbar-nav navbar-right zero-margin" *ngIf="user">
+      <p class="navbar-text" style="color: white">Winkelwagen ({{ teller }})</p>
       <i class="fas fa-shopping-cart fa-2x vc"></i>
     </div>
   </div>

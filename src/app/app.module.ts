@@ -12,10 +12,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { ShoppingCartListComponent } from './shopping-cart/shopping-cart-list/shopping-cart-list.component';
-// import { ProductsComponent } from './products/products.component';
-// import { ProductComponent } from './products/product/product.component';
 import {HttpClientModule} from '@angular/common/http';
 import { RegisterComponent } from './klantenpaneel/register/register.component';
+import {ConfigurationService} from "./shared/configuration.service";
 
 const appRoutes: Routes = [
   {path: 'klantenpaneel', component: KlantenpaneelComponent},
@@ -43,7 +42,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [ConfigurationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
