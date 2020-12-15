@@ -1,19 +1,21 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, Injectable, OnInit, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ConfigurationService} from "../shared/configuration.service";
 import {ProductModel} from "../shared/models/product.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
+@Injectable()
 export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
   itemCount = 0;
 
-  constructor(private http: HttpClient, public conf: ConfigurationService) {
+  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router) {
   }
 
   ngOnInit(): void {
@@ -27,7 +29,19 @@ export class LandingComponent implements OnInit {
   }
 
   voegToeAanCart(product: ProductModel) {
-    Swal.fire(product.titel, 'Toegevoegd', 'success');
-    this.itemCount++;
+    if (this.conf.user){
+      Swal.fire(product.titel, 'Toegevoegd', 'success');
+      // TODO Voeg item toe aan winkelwagen
+      this.itemCount++;
+    } else {
+      Swal.fire({
+        title: 'Je moet eerst inloggen',
+        icon: 'info',
+        focusConfirm: false,
+        confirmButtonText: 'Inloggen'
+      }).then((result) => {
+        this.route.navigate(['/klantenpaneel']);
+      })
+    }
   }
 }
