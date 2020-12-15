@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
   itemCount = 0;
+  productenView = true;
 
   constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router) {
   }

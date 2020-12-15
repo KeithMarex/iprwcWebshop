@@ -1,8 +1,9 @@
-import {Component, Injectable, Input, OnInit} from '@angular/core';
+import {Component, Injectable, Input, OnInit, Output} from '@angular/core';
 import {ConfigurationService} from "../shared/configuration.service";
 import {UserModel} from "../shared/models/user.model";
 import {Router} from "@angular/router";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js';
+import {EventEmitter} from "@angular/core";
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js';
 @Injectable()
 export class HeaderComponent implements OnInit {
   @Input() teller: number;
+  @Output() AccountView = new EventEmitter();
   user: UserModel = this.conf.user;
 
   constructor(private conf: ConfigurationService, private route: Router) { }
@@ -23,7 +25,7 @@ export class HeaderComponent implements OnInit {
 
   Account() {
     if (this.user){
-      Swal.fire('Good job!', 'You clicked the button!', 'success');
+      this.AccountView.emit();
     } else {
       this.route.navigate(['/klantenpaneel']);
     }
