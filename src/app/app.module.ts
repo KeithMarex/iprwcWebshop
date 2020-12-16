@@ -15,6 +15,9 @@ import { ShoppingCartListComponent } from './shopping-cart/shopping-cart-list/sh
 import {HttpClientModule} from '@angular/common/http';
 import { RegisterComponent } from './klantenpaneel/register/register.component';
 import {ConfigurationService} from "./shared/configuration.service";
+import {CookieService} from "ngx-cookie-service";
+import { WinkelwagenComponent } from './landing/winkelwagen/winkelwagen.component';
+import { AccountComponent } from './landing/account/account.component';
 
 const appRoutes: Routes = [
   {path: 'klantenpaneel', component: KlantenpaneelComponent},
@@ -32,7 +35,9 @@ const appRoutes: Routes = [
     PasswordForgetComponent,
     ShoppingCartComponent,
     ShoppingCartListComponent,
-    RegisterComponent
+    RegisterComponent,
+    WinkelwagenComponent,
+    AccountComponent
     // ProductsComponent,
     // ProductComponent
   ],
@@ -42,7 +47,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
   ],
-  providers: [ConfigurationService],
+  providers: [ConfigurationService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import {ConfigurationService} from '../../shared/configuration.service';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js';
 import {Router} from "@angular/router";
 import {UserModel} from "../../shared/models/user.model";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-login',
@@ -15,15 +16,19 @@ export class LoginComponent implements OnInit {
   succes = true;
   type = 'login';
 
-  constructor(private http: HttpClient, private conf: ConfigurationService, private router: Router) { }
+  constructor(private http: HttpClient, private conf: ConfigurationService, private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
   }
 
   onFormSubmit(postData: { email: string; wachtwoord: string }) {
     // Send Http request
+    console.log(postData);
+
     this.http.post('http://' + this.conf.hostname + ':3000/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
       if (JSON.parse(JSON.stringify(responseData))['login'] === true){
+        this.cookieService.set('iprwcLoginEmail', postData.email);
+        this.cookieService.set('iprwcLoginPassword', postData.wachtwoord);
         const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
         this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
         Swal.fire({title: 'Login succesvol', text:'', icon:'success', timer: 1000});

@@ -4,6 +4,7 @@ import {ConfigurationService} from "../shared/configuration.service";
 import {ProductModel} from "../shared/models/product.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-landing',
@@ -14,9 +15,9 @@ import {Router} from "@angular/router";
 export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
   itemCount = 0;
-  productenView = true;
+  view = 'product';
 
-  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router) {
+  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router, private cookieService: CookieService) {
   }
 
   ngOnInit(): void {
@@ -27,6 +28,9 @@ export class LandingComponent implements OnInit {
         this.products.push(model);
       }
     });
+
+    console.log(this.cookieService.get('iprwcLoginEmail'));
+    console.log(this.cookieService.get('iprwcLoginPassword'));
   }
 
   voegToeAanCart(product: ProductModel) {
@@ -43,6 +47,22 @@ export class LandingComponent implements OnInit {
       }).then((result) => {
         this.route.navigate(['/klantenpaneel']);
       })
+    }
+  }
+
+  switchWinkelwagen() {
+    if (this.view !== 'cart'){
+      this.view = 'cart';
+    } else {
+      this.view = 'product';
+    }
+  }
+
+  switchAccount() {
+    if (this.view !== 'account'){
+      this.view = 'account';
+    } else {
+      this.view = 'product';
     }
   }
 }

@@ -1,5 +1,5 @@
-<app-header [teller]="itemCount" (AccountView)="productenView = !productenView "></app-header>
-<body *ngIf="productenView">
+<app-header [teller]="itemCount" (WinkelwagenView)="switchWinkelwagen()" (AccountView)="switchAccount()"></app-header>
+<body *ngIf="view === 'product'">
   <div class="jumbotron box no-margin">
     <div class="container modal-login">
       <div class="row">
@@ -29,4 +29,12 @@
     </div>
     <hr>
   </div>
+</body>
+
+<body *ngIf="view === 'account'">
+  <app-account></app-account>
+</body>
+
+<body *ngIf="view === 'cart'">
+  <app-winkelwagen></app-winkelwagen>
 </body>
