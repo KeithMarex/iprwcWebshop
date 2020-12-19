@@ -23,15 +23,16 @@ export class PasswordForgetComponent implements OnInit {
   onFormSubmit(postData: { email: string }) {
     console.log(postData);
     if (postData.email.includes('@')){
-      this.http.post('http://' + this.conf.hostname + ':3000/user/passChange', postData).subscribe(responseData => {console.log(responseData);
+      this.http.post('http://' + this.conf.hostname + ':3000/user/passReset', postData).subscribe(responseData => {console.log(responseData);
         if (JSON.parse(JSON.stringify(responseData))['reset'] === true){
-          Swal.fire('Wachtwoord aangevraagd', '', 'success');
+          Swal.fire('Wachtwoord aangevraagd', 'Controleer je e-mail adres voor een tijdelijk wachtwoord.', 'success');
           this.goToLogin();
         } else {
           Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!'});
         }
       });
-    } else {
+    }
+    else {
       this.succes = false;
     }
   }
