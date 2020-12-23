@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {ConfigurationService} from "../../shared/configuration.service";
-import {Config} from "codelyzer";
 import {HttpClient} from "@angular/common/http";
 
 @Component({

@@ -15,6 +15,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class HeaderComponent implements OnInit {
   @Input() teller: number;
+  @Output() NormalView = new EventEmitter();
   @Output() AccountView = new EventEmitter();
   @Output() WinkelwagenView = new EventEmitter();
   userName: string;
@@ -32,6 +33,8 @@ export class HeaderComponent implements OnInit {
           this.setName();
         }
       });
+    } else {
+      this.setName();
     }
   }
 
@@ -46,6 +49,8 @@ export class HeaderComponent implements OnInit {
   setName(): void {
     if (this.cookieService.get('iprwcLoginEmail') !== ''){
       this.userName = this.conf.user.voornaam;
+    } else {
+      this.userName = 'Account';
     }
   }
 

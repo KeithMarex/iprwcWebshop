@@ -1,4 +1,4 @@
-<app-header [teller]="itemCount" (WinkelwagenView)="switchWinkelwagen()" (AccountView)="switchAccount()"></app-header>
+<app-header [teller]="itemCount" (WinkelwagenView)="switchWinkelwagen()" (AccountView)="switchAccount()" (NormalView)="this.view = 'product'"></app-header>
 <body *ngIf="view === 'product'">
   <div class="jumbotron box no-margin">
     <div class="container modal-login">
