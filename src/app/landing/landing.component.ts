@@ -1,10 +1,11 @@
-import {Component, Injectable, OnInit, Output} from '@angular/core';
+import {Component, Injectable, OnInit, Output, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ConfigurationService} from "../shared/configuration.service";
 import {ProductModel} from "../shared/models/product.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
+import {HeaderComponent} from "../header/header.component";
 
 @Component({
   selector: 'app-landing',
@@ -14,8 +15,8 @@ import {CookieService} from "ngx-cookie-service";
 @Injectable()
 export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
-  itemCount = 0;
   view = 'product';
+  @ViewChild(HeaderComponent) hc;
 
   constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router, private cookieService: CookieService) {
   }
@@ -35,9 +36,13 @@ export class LandingComponent implements OnInit {
 
   voegToeAanCart(product: ProductModel) {
     if (this.conf.user){
-      Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success'});
-      // TODO Voeg item toe aan winkelwagen
-      this.itemCount++;
+      const koppelProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
+      this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(responseData => {
+        console.log(responseData)
+        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success'});
+        // TODO Voeg item toe aan winkelwagen
+        this.hc.telOp();
+      });
     } else {
       Swal.fire({
         title: 'Je moet eerst inloggen',

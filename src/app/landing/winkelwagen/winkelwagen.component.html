@@ -12,50 +12,49 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-<!--          NgFor for products in cart -->
+        <!--          NgFor for products in cart -->
+        <tr *ngFor="let pr of cartProducts">
           <td class="col-sm-8 col-md-6">
             <div class="media">
-              <a class="thumbnail pull-left" href="#"><img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;"> </a>
+              <a class="thumbnail pull-left"><img class="media-object" src="../../../assets/images/phones/{{pr.fotoPath}}" style="width: 55px; height: 72px;"> </a>
               <div class="media-body" style="padding-left: 20px">
-                <h4 class="media-heading"><a style="cursor:pointer;">Product name</a></h4>
+                <h4 class="media-heading"><a style="cursor:pointer;">{{pr.titel}}</a></h4>
                 <span>Status: </span><span class="text-success">Op voorraad</span>
               </div>
-            </div></td>
-          <td class="col-sm-1 col-md-1" style="text-align: center">
-            <input type="email" class="form-control" id="exampleInputEmail1" value="3">
+            </div>
           </td>
-          <td class="col-sm-1 col-md-1 text-center">$4.87</td>
-          <td class="col-sm-1 col-md-1 text-center">$14.61</td>
+          <td class="col-sm-1 col-md-1" style="text-align: center">
+            <input type="email" class="form-control" id="exampleInputEmail1" value="{{pr.count}}">
+          </td>
+          <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs}}</td>
+          <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs * pr.count}}</td>
           <td class="col-sm-1 col-md-1">
-            <button type="button" class="btn btn-danger">
+            <button type="button" class="btn btn-danger" (click)="removeProduct(pr)">
               <span class="glyphicon glyphicon-remove"></span> Remove
             </button>
           </td>
-
         </tr>
-
 
         <tr>
           <td></td>
           <td></td>
           <td></td>
-          <td><h5>Subtotal</h5></td>
-          <td class="text-right"><h5>$24.59</h5></td>
+          <td><h5>Subtotaal</h5></td>
+          <td class="text-right"><h5>€ {{ TotalAmount }}</h5></td>
         </tr>
         <tr>
           <td></td>
           <td></td>
           <td></td>
-          <td><h5>Estimated shipping</h5></td>
-          <td class="text-right"><h5>$6.94</h5></td>
+          <td><h5>Geschatte verzendkosten</h5></td>
+          <td class="text-right"><h5>€ 6,75</h5></td>
         </tr>
         <tr>
           <td></td>
           <td></td>
           <td></td>
-          <td><h3>Total</h3></td>
-          <td class="text-right"><h3>$31.53</h3></td>
+          <td><h3>Totaal</h3></td>
+          <td class="text-right"><h3>€ {{ TotalAmount + 6.75}}</h3></td>
         </tr>
         <tr>
           <td></td>

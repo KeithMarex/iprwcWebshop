@@ -14,7 +14,7 @@ import {HttpClient} from "@angular/common/http";
 })
 @Injectable()
 export class HeaderComponent implements OnInit {
-  @Input() teller: number;
+  teller: number = 0;
   @Output() NormalView = new EventEmitter();
   @Output() AccountView = new EventEmitter();
   @Output() WinkelwagenView = new EventEmitter();
@@ -31,8 +31,18 @@ export class HeaderComponent implements OnInit {
           const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
           this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
           this.setName();
+
+          const getProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
+          this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', getProduct).subscribe(responseData => {
+            console.log(responseData['result'])
+            let data = responseData['result'];
+            for (let i = 0; i < data.length; i++){
+              this.teller = this.teller + Number(data[i]['count']);
+            }
+          });
         }
       });
+
     } else {
       this.setName();
     }
@@ -56,5 +66,9 @@ export class HeaderComponent implements OnInit {
 
   Winkelwagen() {
     this.WinkelwagenView.emit();
+  }
+
+  telOp() {
+    this.teller = this.teller + 1;
   }
 }
