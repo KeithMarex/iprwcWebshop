@@ -23,7 +23,7 @@
       <i class="fas fa-user fa-2x vc"></i>
     </div>
     <div class="navbar-nav navbar-right zero-margin" (click)="Winkelwagen()" *ngIf="this.conf.user">
-      <p class="navbar-text" style="color: white">Winkelwagen ({{ teller }})</p>
+      <p class="navbar-text" style="color: white">Winkelwagen<a *ngIf="this.conf.productenCount" style="color: white; text-decoration: none !important;"> ({{this.conf.productenCount}})</a></p>
       <i class="fas fa-shopping-cart fa-2x vc"></i>
     </div>
   </div>

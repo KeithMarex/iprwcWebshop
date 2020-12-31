@@ -36,5 +36,5 @@
 </body>
 
 <body *ngIf="view === 'cart'">
-  <app-winkelwagen></app-winkelwagen>
+  <app-winkelwagen (updateProducten)="updateProductenP()"></app-winkelwagen>
 </body>

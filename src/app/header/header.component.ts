@@ -32,14 +32,7 @@ export class HeaderComponent implements OnInit {
           this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
           this.setName();
 
-          const getProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
-          this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', getProduct).subscribe(responseData => {
-            console.log(responseData['result'])
-            let data = responseData['result'];
-            for (let i = 0; i < data.length; i++){
-              this.teller = this.teller + Number(data[i]['count']);
-            }
-          });
+          this.teller = this.conf.productenCount;
         }
       });
 
@@ -70,5 +63,16 @@ export class HeaderComponent implements OnInit {
 
   telOp() {
     this.teller = this.teller + 1;
+  }
+
+  refreshProducten() {
+    const getProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
+    this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', getProduct).subscribe(responseData => {
+      this.teller = 0;
+      let data = responseData['result'];
+      for (let i = 0; i < data.length; i++){
+        this.teller = this.teller + Number(data[i]['count']);
+      }
+    });
   }
 }

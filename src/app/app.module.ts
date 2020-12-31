@@ -47,7 +47,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
   ],
-  providers: [ConfigurationService, CookieService],
+  providers: [ConfigurationService, CookieService, HeaderComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

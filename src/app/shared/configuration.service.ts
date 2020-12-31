@@ -8,6 +8,7 @@ export class ConfigurationService{
   public winkelWagen: ProductModel[] = [];
   public itemCount = 0;
   public hostname = 'localhost';
+  public productenCount = 0;
 
   constructor() {}
 }

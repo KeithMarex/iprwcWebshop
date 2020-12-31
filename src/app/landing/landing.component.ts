@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Injectable, OnInit, Output, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ConfigurationService} from "../shared/configuration.service";
 import {ProductModel} from "../shared/models/product.model";
@@ -17,6 +17,7 @@ export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
   view = 'product';
   @ViewChild(HeaderComponent) hc;
+  @Output() updateProductenEvent = new EventEmitter();
 
   constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router, private cookieService: CookieService) {
   }
@@ -69,5 +70,9 @@ export class LandingComponent implements OnInit {
     } else {
       this.view = 'product';
     }
+  }
+
+  updateProductenP(){
+    this.hc.refreshProducten();
   }
 }
