@@ -57,8 +57,8 @@ export class LandingComponent implements OnInit {
       this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(responseData => {
         Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, timer: 1500});
         this.hc.telOp();
+        this.laadWinkelWagen();
       });
-      this.laadWinkelWagen();
     } else {
       Swal.fire({
         title: 'Je moet eerst inloggen',

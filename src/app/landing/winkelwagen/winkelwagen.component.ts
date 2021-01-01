@@ -46,7 +46,7 @@ export class WinkelwagenComponent implements OnInit {
       this.reloadPrice();
     });
 
-    this.conf.productenCount-= 1;
+    this.conf.productenCount = this.conf.productenCount - product.count
   }
 
   changeAmount(product: cartProductModel, event){
