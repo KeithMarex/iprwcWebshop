@@ -42,8 +42,6 @@ export class WinkelwagenComponent implements OnInit {
     });
   }
 
-
-
   changeAmount(product: cartProductModel, event){
     if (event.target.value >= 1){
       for (let i = 0; i < this.cartProducts.length; i++){
