@@ -6,6 +6,7 @@ import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {HeaderComponent} from "../header/header.component";
+import {cartProductModel} from "../shared/models/cartProduct.model";
 
 @Component({
   selector: 'app-landing',
@@ -30,26 +31,41 @@ export class LandingComponent implements OnInit {
         this.products.push(model);
       }
     });
+  }
 
-    console.log(this.cookieService.get('iprwcLoginEmail'));
-    console.log(this.cookieService.get('iprwcLoginPassword'));
+  laadWinkelWagen() {
+    this.conf.winkelWagen.length = 0;
+
+    const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
+    this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', postData).subscribe(responseData => {
+      for (let i = 0; i < responseData['result'].length; i++){
+        let data = JSON.parse(JSON.stringify(responseData))['result'][i];
+        let product = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], Number(data['count']));
+        this.conf.winkelWagen.push(product);
+
+        this.conf.productenCount = 0;
+        for (let j = 0; j < this.conf.winkelWagen.length; j++){
+          this.conf.productenCount = this.conf.productenCount + this.conf.winkelWagen[j].count;
+        }
+      }
+    });
   }
 
   voegToeAanCart(product: ProductModel) {
     if (this.conf.user){
       const koppelProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
       this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(responseData => {
-        console.log(responseData)
-        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success'});
-        // TODO Voeg item toe aan winkelwagen
+        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, timer: 1500});
         this.hc.telOp();
       });
+      this.laadWinkelWagen();
     } else {
       Swal.fire({
         title: 'Je moet eerst inloggen',
         icon: 'info',
         focusConfirm: false,
-        confirmButtonText: 'Inloggen'
+        confirmButtonText: 'Inloggen',
+        toast: true
       }).then((result) => {
         this.route.navigate(['/klantenpaneel']);
       })

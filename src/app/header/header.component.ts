@@ -15,6 +15,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class HeaderComponent implements OnInit {
   teller: number = 0;
+  @Output() laadWinkelWagen = new EventEmitter();
   @Output() NormalView = new EventEmitter();
   @Output() AccountView = new EventEmitter();
   @Output() WinkelwagenView = new EventEmitter();
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit {
           const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
           this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
           this.setName();
+          this.laadWinkelWagen.emit();
 
           this.teller = this.conf.productenCount;
         }

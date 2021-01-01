@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         <!--          NgFor for products in cart -->
-        <tr *ngFor="let pr of cartProducts">
+        <tr *ngFor="let pr of this.conf.winkelWagen;">
           <td class="col-sm-8 col-md-6">
             <div class="media">
               <a class="thumbnail pull-left"><img class="media-object" src="../../../assets/images/phones/{{pr.fotoPath}}" style="width: 55px; height: 72px;"> </a>
