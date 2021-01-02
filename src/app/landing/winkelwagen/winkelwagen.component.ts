@@ -32,7 +32,7 @@ export class WinkelwagenComponent implements OnInit {
   removeProduct(product: cartProductModel){
     const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
 
-    this.http.post('http://' + this.conf.hostname + ':3000/cart/deleteProduct', postData).subscribe(responseData => {
+    this.http.post(this.conf.hostname + '/cart/deleteProduct', postData).subscribe(responseData => {
       let index = this.conf.winkelWagen.indexOf(product);
       this.conf.winkelWagen.splice(index, 1);
       Swal.fire({
@@ -60,7 +60,7 @@ export class WinkelwagenComponent implements OnInit {
 
       const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id, value: event.target.value}));
 
-      this.http.post('http://' + this.conf.hostname + ':3000/cart/changeValue', postData).subscribe(responseData => {console.log(responseData)});
+      this.http.post(this.conf.hostname + '/cart/changeValue', postData).subscribe(responseData => {console.log(responseData)});
       this.updateProducten.emit()
 
       this.reloadPrice();

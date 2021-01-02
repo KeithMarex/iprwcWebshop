@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
     if (this.cookieService.get('iprwcLoginEmail') !== ''){
       const postData = JSON.parse(JSON.stringify({email: this.cookieService.get('iprwcLoginEmail'), wachtwoord: this.cookieService.get('iprwcLoginPassword')}));
 
-      this.http.post('http://' + this.conf.hostname + ':3000/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
+      this.http.post(this.conf.hostname + '/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
         if (JSON.parse(JSON.stringify(responseData))['login'] === true){
           const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
           this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
@@ -69,7 +69,7 @@ export class HeaderComponent implements OnInit {
 
   refreshProducten() {
     const getProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
-    this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', getProduct).subscribe(responseData => {
+    this.http.post(this.conf.hostname + '/cart/getProducts', getProduct).subscribe(responseData => {
       this.teller = 0;
       let data = responseData['result'];
       for (let i = 0; i < data.length; i++){

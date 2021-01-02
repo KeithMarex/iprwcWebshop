@@ -23,9 +23,7 @@ export class LoginComponent implements OnInit {
 
   onFormSubmit(postData: { email: string; wachtwoord: string }) {
     // Send Http request
-    console.log(postData);
-
-    this.http.post('http://' + this.conf.hostname + ':3000/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
+    this.http.post(this.conf.hostname + '/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
       if (JSON.parse(JSON.stringify(responseData))['login'] === true){
         this.cookieService.set('iprwcLoginEmail', postData.email);
         this.cookieService.set('iprwcLoginPassword', postData.wachtwoord);

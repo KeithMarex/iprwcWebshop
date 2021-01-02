@@ -21,8 +21,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onFormSubmit(postData: { voornaam: string; achternaam: string, email: string, wachtwoord: string, straatnaam: string, huisnummer: number, plaatsnaam: string }) {
-    this.http.post('http://' + this.conf.hostname + ':3000/user/create', postData).subscribe(responseData => {
-      console.log(responseData);
+    this.http.post(this.conf.hostname + '/user/create', postData).subscribe(responseData => {
       if (JSON.parse(JSON.stringify(responseData))['create'] === true){
         this.gaNaarLogin()
         Swal.fire('Account aangemaakt', 'Je hebt een account succesvol aangemaakt.', 'success');

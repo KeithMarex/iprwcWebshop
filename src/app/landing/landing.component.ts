@@ -24,7 +24,7 @@ export class LandingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get('http://' + this.conf.hostname + ':3000/product/get/all').subscribe(responseData => {
+    this.http.get(this.conf.hostname + '/product/get/all').subscribe(responseData => {
       let data = JSON.parse(JSON.stringify(responseData))['result'];
       for (let i = 0; i < data.length; i++){
         let model = new ProductModel(data[i]['product_id'], data[i]['titel'], data[i]['beschrijving'], Number(data[i]['voorraad']), Number(data[i]['prijs']), data[i]['product_foto_path']);
@@ -37,7 +37,7 @@ export class LandingComponent implements OnInit {
     this.conf.winkelWagen.length = 0;
 
     const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
-    this.http.post('http://' + this.conf.hostname + ':3000/cart/getProducts', postData).subscribe(responseData => {
+    this.http.post(this.conf.hostname + '/cart/getProducts', postData).subscribe(responseData => {
       for (let i = 0; i < responseData['result'].length; i++){
         let data = JSON.parse(JSON.stringify(responseData))['result'][i];
         let product = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], Number(data['count']));
@@ -54,7 +54,7 @@ export class LandingComponent implements OnInit {
   voegToeAanCart(product: ProductModel) {
     if (this.conf.user){
       const koppelProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
-      this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(
+      this.http.post(this.conf.hostname + '/cart/addProduct', koppelProduct).subscribe(
         responseData => {
         if (responseData['result'].length === 0){
           Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
@@ -64,7 +64,7 @@ export class LandingComponent implements OnInit {
       }, err => {
         const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
 
-        this.http.post('http://' + this.conf.hostname + ':3000/cart/increaseAmountByOne', postData).subscribe(responseData => {
+        this.http.post(this.conf.hostname + '/cart/increaseAmountByOne', postData).subscribe(responseData => {
           Swal.fire({title: product.titel, text: 'Product zat al in winkelwagen, aantal is verhoogd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
           this.hc.telOp();
           this.laadWinkelWagen();
