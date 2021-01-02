@@ -40,6 +40,7 @@ export class WinkelwagenComponent implements OnInit {
         position: 'top-end',
         icon: 'success',
         title: 'Product verwijderd',
+        allowOutsideClick: false,
         showConfirmButton: false,
         timer: 1500
       })

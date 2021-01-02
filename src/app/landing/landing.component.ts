@@ -54,10 +54,21 @@ export class LandingComponent implements OnInit {
   voegToeAanCart(product: ProductModel) {
     if (this.conf.user){
       const koppelProduct = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
-      this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(responseData => {
-        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, timer: 1500});
+      this.http.post('http://' + this.conf.hostname + ':3000/cart/addProduct', koppelProduct).subscribe(
+        responseData => {
+        if (responseData['result'].length === 0){
+          Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+        }
         this.hc.telOp();
         this.laadWinkelWagen();
+      }, err => {
+        const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
+
+        this.http.post('http://' + this.conf.hostname + ':3000/cart/increaseAmountByOne', postData).subscribe(responseData => {
+          Swal.fire({title: product.titel, text: 'Product zat al in winkelwagen, aantal is verhoogd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          this.hc.telOp();
+          this.laadWinkelWagen();
+        });
       });
     } else {
       Swal.fire({
