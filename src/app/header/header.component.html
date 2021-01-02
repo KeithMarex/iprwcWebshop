@@ -19,7 +19,8 @@
     </form>
 
     <div class="navbar-nav navbar-right zero-margin" (click)="Account()">
-      <p class="navbar-text" style="color: white">{{ userName }}</p>
+      <p class="navbar-text" style="color: white" *ngIf="this.conf.user">{{ userName }}</p>
+      <p class="navbar-text" style="color: white" *ngIf="!this.conf.user">Account</p>
       <i class="fas fa-user fa-2x vc"></i>
     </div>
     <div class="navbar-nav navbar-right zero-margin" (click)="Winkelwagen()" *ngIf="this.conf.user">

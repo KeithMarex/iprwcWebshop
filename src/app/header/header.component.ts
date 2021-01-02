@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
       });
 
     } else {
-      this.setName();
+      this.userName = 'Account';
     }
   }
 

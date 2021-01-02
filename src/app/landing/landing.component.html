@@ -32,7 +32,7 @@
 </body>
 
 <body *ngIf="view === 'account'">
-  <app-account></app-account>
+  <app-account (switchHome)="this.view = 'product'"></app-account>
 </body>
 
 <body *ngIf="view === 'cart'">

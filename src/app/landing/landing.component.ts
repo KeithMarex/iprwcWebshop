@@ -74,11 +74,12 @@ export class LandingComponent implements OnInit {
       Swal.fire({
         title: 'Je moet eerst inloggen',
         icon: 'info',
-        focusConfirm: false,
-        confirmButtonText: 'Inloggen',
-        toast: true
+        focusConfirm: true,
+        confirmButtonText: 'Inloggen'
       }).then((result) => {
-        this.route.navigate(['/klantenpaneel']);
+        if (result['isConfirmed']){
+          this.route.navigate(['/klantenpaneel']);
+        }
       })
     }
   }
