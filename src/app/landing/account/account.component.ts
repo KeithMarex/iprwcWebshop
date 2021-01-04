@@ -62,7 +62,7 @@ export class AccountComponent implements OnInit {
 
   veranderWachtwoord() {
     Swal.mixin({
-      input: 'text',
+      input: 'password',
       confirmButtonText: 'Volgende &rarr;',
       showCancelButton: true,
       progressSteps: ['1', '2', '3']

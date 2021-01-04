@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   @Output() NormalView = new EventEmitter();
   @Output() AccountView = new EventEmitter();
   @Output() WinkelwagenView = new EventEmitter();
+  @Output() searchProduct = new EventEmitter<any>();
   userName: string;
 
   constructor(public conf: ConfigurationService, private route: Router, private cookieService: CookieService, private http: HttpClient) { }
@@ -76,5 +77,9 @@ export class HeaderComponent implements OnInit {
         this.teller = this.teller + Number(data[i]['count']);
       }
     });
+  }
+
+  search(event) {
+    this.searchProduct.emit(event);
   }
 }

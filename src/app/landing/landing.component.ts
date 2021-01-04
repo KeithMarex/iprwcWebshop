@@ -4,7 +4,6 @@ import {ConfigurationService} from "../shared/configuration.service";
 import {ProductModel} from "../shared/models/product.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {Router} from "@angular/router";
-import {CookieService} from "ngx-cookie-service";
 import {HeaderComponent} from "../header/header.component";
 import {cartProductModel} from "../shared/models/cartProduct.model";
 
@@ -16,11 +15,12 @@ import {cartProductModel} from "../shared/models/cartProduct.model";
 @Injectable()
 export class LandingComponent implements OnInit {
   products: ProductModel[] = [];
+  copyProduct: ProductModel[] = [];
   view = 'product';
   @ViewChild(HeaderComponent) hc;
   @Output() updateProductenEvent = new EventEmitter();
 
-  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router, private cookieService: CookieService) {
+  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router) {
   }
 
   ngOnInit(): void {
@@ -29,6 +29,7 @@ export class LandingComponent implements OnInit {
       for (let i = 0; i < data.length; i++){
         let model = new ProductModel(data[i]['product_id'], data[i]['titel'], data[i]['beschrijving'], Number(data[i]['voorraad']), Number(data[i]['prijs']), data[i]['product_foto_path']);
         this.products.push(model);
+        this.copyProduct = this.products;
       }
     });
   }
@@ -111,5 +112,11 @@ export class LandingComponent implements OnInit {
 
   updateProductenP(){
     this.hc.refreshProducten();
+  }
+
+  zoekProduct(event) {
+    this.copyProduct = this.products.filter(function(hero){
+      return hero.titel.includes(event.target.value);
+    })
   }
 }

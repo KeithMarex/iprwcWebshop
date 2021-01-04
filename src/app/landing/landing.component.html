@@ -1,4 +1,4 @@
-<app-header (WinkelwagenView)="switchWinkelwagen()" (AccountView)="switchAccount()" (NormalView)="this.view = 'product'" (laadWinkelWagen)="laadWinkelWagen()"></app-header>
+<app-header (searchProduct)="zoekProduct($event)" (WinkelwagenView)="switchWinkelwagen()" (AccountView)="switchAccount()" (NormalView)="this.view = 'product'" (laadWinkelWagen)="laadWinkelWagen()"></app-header>
 <body *ngIf="view === 'product'">
   <div class="jumbotron box no-margin">
     <div class="container modal-login">
@@ -13,9 +13,8 @@
   </div>
   <div class="container">
     <hr>
-
     <div class="row no-margin">
-      <div class="col-sm-6 col-md-4 mb" *ngFor="let product of products">
+      <div class="col-sm-6 col-md-4 mb" *ngFor="let product of copyProduct">
         <div class="thumbnail box-shadow">
           <img src="../../assets/images/phones/{{product.foto_path}}" alt="...">
           <div class="caption">

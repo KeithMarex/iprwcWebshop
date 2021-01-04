@@ -29,7 +29,15 @@ export class LoginComponent implements OnInit {
         this.cookieService.set('iprwcLoginPassword', postData.wachtwoord);
         const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
         this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
-        Swal.fire({title: 'Login succesvol', text:'', icon:'success', timer: 1000});
+        Swal.fire({
+          backdrop: false,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Succesvol ingelogd',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500
+        })
         this.router.navigate(['/']);
       } else {
         Swal.fire({icon: 'error', title: 'Oops...', text: 'Je email of wachtwoord combinatie is verkeerd', timer: 1000});
