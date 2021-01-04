@@ -3,3 +3,23 @@
   padding-top: 60px;
   padding-bottom: 0;
 }
+
+.fw {
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background-color: mediumseagreen;
+  border-top-color: mediumseagreen;
+  border-right-color: mediumseagreen;
+  border-left-color: mediumseagreen;
+  border-bottom: 3px solid #37A166;
+}
+
+.fw-primary {
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background-color: dodgerblue;
+  border-top-color: dodgerblue;
+  border-right-color: dodgerblue;
+  border-left-color: #1e90ff;
+  border-bottom: 3px solid #0869c3;
+}
