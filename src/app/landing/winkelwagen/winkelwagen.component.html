@@ -1,7 +1,8 @@
 <div class="container box">
   <div class="row">
     <div class="col-sm-12 col-md-10 col-md-offset-1">
-      <table class="table">
+      <h1 style="text-align: center" *ngIf="this.conf.winkelWagen.length === 0">Je winkelwagen is leeg</h1>
+      <table class="table" *ngIf="this.conf.winkelWagen.length !== 0">
         <thead>
         <tr>
           <th>Product</th>

@@ -85,8 +85,17 @@ export class LandingComponent implements OnInit {
   }
 
   switchWinkelwagen() {
-    if (this.view !== 'cart'){
+    if (this.view !== 'cart' && this.conf.winkelWagen.length !== 0) {
       this.view = 'cart';
+    } else if (this.conf.winkelWagen.length === 0 && this.view === 'cart'){
+      this.view = 'product';
+    } else if (this.conf.winkelWagen.length === 0){
+      Swal.fire({
+        title: 'Je winkelwagen is leeg',
+        icon: 'error',
+        focusConfirm: true,
+        confirmButtonText: 'Oke'
+      })
     } else {
       this.view = 'product';
     }

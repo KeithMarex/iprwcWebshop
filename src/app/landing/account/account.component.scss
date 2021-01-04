@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Avenir";
+  src: url(../../../assets/fonts/avenir/AvenirLTStd-Roman.otf) format("opentype");
+}
+
+* {
+  font-family: Avenir, serif;
+}
+
 .box {
   background-color: white;
   padding-top: 60px;
