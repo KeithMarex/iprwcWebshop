@@ -38,3 +38,12 @@ nav {
 
 body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: visible !important; }
 
+.navbar-brand {
+  height: 80px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: -15px;
+  margin-bottom: -15px;
+  overflow: hidden;
+}
+
