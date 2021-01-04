@@ -88,7 +88,7 @@ export class WinkelwagenComponent implements OnInit {
     }).then((result) => {
       /* Read more about handling dismissals below */
       for (let i = 0; i < this.conf.winkelWagen.length; i++){
-        this.conf.winkelWagen.splice(i, 1);
+        this.conf.winkelWagen.splice(i);
       }
       this.reloadPrice();
 
