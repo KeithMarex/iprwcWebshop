@@ -72,4 +72,30 @@ export class WinkelwagenComponent implements OnInit {
     }
   }
 
+  bestel() {
+    let timerInterval
+    Swal.fire({
+      title: 'Bestelling wordt verwerkt',
+      timer: 1000,
+      didOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+        }, 100)
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      for (let i = 0; i < this.conf.winkelWagen.length; i++){
+        this.conf.winkelWagen.splice(i, 1);
+      }
+      this.reloadPrice();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Bestelling voltooid',
+      })
+    })
+  }
 }
