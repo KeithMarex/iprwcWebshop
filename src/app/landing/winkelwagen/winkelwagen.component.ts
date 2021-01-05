@@ -87,14 +87,26 @@ export class WinkelwagenComponent implements OnInit {
       }
     }).then((result) => {
       /* Read more about handling dismissals below */
-      for (let i = 0; i < this.conf.winkelWagen.length; i++){
+      for (let i = 0; i < this.conf.winkelWagen.length; i++) {
         this.conf.winkelWagen.splice(i);
       }
       this.reloadPrice();
 
+      let timerInterval2
       Swal.fire({
+        position: 'top-end',
+        backdrop: false,
         icon: 'success',
         title: 'Bestelling voltooid',
+        timer: 3000,
+        showConfirmButton: false,
+        didOpen: () => {
+          timerInterval2 = setInterval(() => {
+          }, 100)
+        },
+        willClose: () => {
+          clearInterval(timerInterval2)
+        }
       })
     })
   }

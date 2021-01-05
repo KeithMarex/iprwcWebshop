@@ -10,8 +10,6 @@ import { LoginComponent } from './klantenpaneel/login/login.component';
 import { PasswordForgetComponent } from './klantenpaneel/password-forget/password-forget.component';
 import {RouterModule, Routes} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-import { ShoppingCartListComponent } from './shopping-cart/shopping-cart-list/shopping-cart-list.component';
 import {HttpClientModule} from '@angular/common/http';
 import { RegisterComponent } from './klantenpaneel/register/register.component';
 import {ConfigurationService} from "./shared/configuration.service";
@@ -33,13 +31,9 @@ const appRoutes: Routes = [
     KlantenpaneelComponent,
     LoginComponent,
     PasswordForgetComponent,
-    ShoppingCartComponent,
-    ShoppingCartListComponent,
     RegisterComponent,
     WinkelwagenComponent,
     AccountComponent
-    // ProductsComponent,
-    // ProductComponent
   ],
   imports: [
     BrowserModule,
