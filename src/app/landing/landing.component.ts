@@ -116,7 +116,7 @@ export class LandingComponent implements OnInit {
 
   zoekProduct(event) {
     this.copyProduct = this.products.filter(function(hero){
-      return hero.titel.includes(event.target.value);
+      return hero.titel.toLocaleLowerCase().includes(event.target.value.toLowerCase());
     })
   }
 }
