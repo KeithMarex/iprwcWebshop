@@ -8,7 +8,9 @@ export class ConfigurationService{
   public winkelWagen: cartProductModel[] = [];
   public itemCount = 0;
   public hostname = 'https://iprwc.kvdmr.nl';
+  // public hostname = 'http://localhost:80';
   public productenCount = 0;
+
 
   constructor() {}
 }

@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ConfigurationService} from "../../shared/configuration.service";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-winkelwagen',
@@ -13,7 +14,7 @@ export class WinkelwagenComponent implements OnInit {
   TotalAmount = 0;
   @Output() updateProducten = new EventEmitter();
 
-  constructor(private http: HttpClient, public conf: ConfigurationService) { }
+  constructor(private http: HttpClient, public conf: ConfigurationService, private cookie: CookieService) { }
 
   ngOnInit(): void{
     this.TotalAmount = 0;
@@ -92,6 +93,11 @@ export class WinkelwagenComponent implements OnInit {
       }
       this.reloadPrice();
 
+      if (this.cookie.check('cart')){
+        this.cookie.delete('cart');
+        this.conf.productenCount = 0;
+      }
+
       let timerInterval2
       Swal.fire({
         position: 'top-end',
@@ -105,7 +111,7 @@ export class WinkelwagenComponent implements OnInit {
           }, 100)
         },
         willClose: () => {
-          clearInterval(timerInterval2)
+          clearInterval(timerInterval2);
         }
       })
     })

@@ -6,6 +6,7 @@ import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {Router} from "@angular/router";
 import {HeaderComponent} from "../header/header.component";
 import {cartProductModel} from "../shared/models/cartProduct.model";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-landing',
@@ -20,7 +21,7 @@ export class LandingComponent implements OnInit {
   @ViewChild(HeaderComponent) hc;
   @Output() updateProductenEvent = new EventEmitter();
 
-  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router) {
+  constructor(private http: HttpClient, public conf: ConfigurationService, private route: Router, private cookie: CookieService) {
   }
 
   ngOnInit(): void {
@@ -32,24 +33,39 @@ export class LandingComponent implements OnInit {
         this.copyProduct = this.products;
       }
     });
+    this.laadWinkelWagen();
   }
 
-  laadWinkelWagen() {
+  async laadWinkelWagen() {
     this.conf.winkelWagen.length = 0;
 
-    const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
-    this.http.post(this.conf.hostname + '/cart/getProducts', postData).subscribe(responseData => {
-      for (let i = 0; i < responseData['result'].length; i++){
-        let data = JSON.parse(JSON.stringify(responseData))['result'][i];
-        let product = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], Number(data['count']));
-        this.conf.winkelWagen.push(product);
+    if (this.conf.user) {
+      const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
+      this.http.post(this.conf.hostname + '/cart/getProducts', postData).subscribe(responseData => {
+        for (let i = 0; i < responseData['result'].length; i++) {
+          let data = JSON.parse(JSON.stringify(responseData))['result'][i];
+          let product = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], Number(data['count']));
+          this.conf.winkelWagen.push(product);
 
-        this.conf.productenCount = 0;
-        for (let j = 0; j < this.conf.winkelWagen.length; j++){
-          this.conf.productenCount = this.conf.productenCount + this.conf.winkelWagen[j].count;
+          this.conf.productenCount = 0;
+          for (let j = 0; j < this.conf.winkelWagen.length; j++) {
+            this.conf.productenCount = this.conf.productenCount + this.conf.winkelWagen[j].count;
+          }
         }
+      });
+    } else {
+      this.conf.productenCount = 0;
+      const json = JSON.parse(this.cookie.get('cart'));
+      for (let i = 0; i < Object.keys(json).length; i++) {
+        let data = json[i];
+        await this.http.get(this.conf.hostname + '/product/getProduct/' + data['product_id']).subscribe(responseData => {
+          let data = JSON.parse(JSON.stringify(responseData))['result'][0];
+          let productCookie = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], 1);
+          this.conf.winkelWagen.push(productCookie);
+        })
+        this.conf.productenCount += 1;
       }
-    });
+    }
   }
 
   voegToeAanCart(product: ProductModel) {
@@ -72,16 +88,32 @@ export class LandingComponent implements OnInit {
         });
       });
     } else {
-      Swal.fire({
-        title: 'Je moet eerst inloggen',
-        icon: 'info',
-        focusConfirm: true,
-        confirmButtonText: 'Inloggen'
-      }).then((result) => {
-        if (result['isConfirmed']){
-          this.route.navigate(['/klantenpaneel']);
-        }
-      })
+      if (this.cookie.check('cart')){
+        this.hc.telOp();
+
+        const newProduct = {
+          product_id: product.id,
+          count: 1
+        };
+
+        let json = JSON.parse(this.cookie.get('cart'));
+
+        json[Object.keys(json).length] = newProduct;
+
+        this.cookie.set('cart', JSON.stringify(json));
+        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+        this.laadWinkelWagen();
+      } else {
+        const lijst = {};
+        lijst[0] = {
+          product_id: product.id,
+          count: 1
+        };
+        this.cookie.set('cart', JSON.stringify(lijst));
+        this.hc.telOp();
+        Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+        this.laadWinkelWagen();
+      }
     }
   }
 
@@ -91,12 +123,7 @@ export class LandingComponent implements OnInit {
     } else if (this.conf.winkelWagen.length === 0 && this.view === 'cart'){
       this.view = 'product';
     } else if (this.conf.winkelWagen.length === 0){
-      Swal.fire({
-        title: 'Je winkelwagen is leeg',
-        icon: 'error',
-        focusConfirm: true,
-        confirmButtonText: 'Oke'
-      })
+      this.view = 'cart';
     } else {
       this.view = 'product';
     }

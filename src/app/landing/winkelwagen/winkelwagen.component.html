@@ -25,7 +25,7 @@
             </div>
           </td>
           <td class="col-sm-1 col-md-1" style="text-align: center">
-            <input type="email" (input)="changeAmount(pr, $event)" class="form-control" id="exampleInputEmail1" value="{{pr.count}}">
+            <input type="number" (input)="changeAmount(pr, $event)" class="form-control" id="exampleInputEmail1" value="{{pr.count}}">
           </td>
           <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs}}</td>
           <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs * pr.count}}</td>
