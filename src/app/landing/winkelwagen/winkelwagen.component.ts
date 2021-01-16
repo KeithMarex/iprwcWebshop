@@ -30,23 +30,31 @@ export class WinkelwagenComponent implements OnInit {
     }
   }
 
-  removeProduct(product: cartProductModel){
-    const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id}));
+  removeProduct(product: cartProductModel, index){
+    if (this.conf.user){
+      const postData = {cartid: this.conf.user.cart_id, productid: product.id};
 
-    this.http.post(this.conf.hostname + '/cart/deleteProduct', postData).subscribe(responseData => {
-      let index = this.conf.winkelWagen.indexOf(product);
+      this.http.post(this.conf.hostname + '/cart/deleteProduct', postData).subscribe(responseData => {
+        let index = this.conf.winkelWagen.indexOf(product);
+        this.conf.winkelWagen.splice(index, 1);
+        Swal.fire({
+          backdrop: false,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Product verwijderd',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.reloadPrice();
+      });
+    } else {
+      const json = JSON.parse(this.cookie.get('cart'));
       this.conf.winkelWagen.splice(index, 1);
-      Swal.fire({
-        backdrop: false,
-        position: 'top-end',
-        icon: 'success',
-        title: 'Product verwijderd',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        timer: 1500
-      })
-      this.reloadPrice();
-    });
+      delete json[index];
+      console.log(json);
+    }
+
 
     this.conf.productenCount = this.conf.productenCount - product.count
   }

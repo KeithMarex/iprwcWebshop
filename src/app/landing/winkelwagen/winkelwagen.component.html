@@ -6,15 +6,15 @@
         <thead>
         <tr>
           <th>Product</th>
-          <th>Quantity</th>
-          <th class="text-center">Price</th>
-          <th class="text-center">Total</th>
+          <th>Aantal</th>
+          <th class="text-center">Prijs</th>
+          <th class="text-center">Totaal</th>
           <th></th>
         </tr>
         </thead>
         <tbody>
         <!--          NgFor for products in cart -->
-        <tr *ngFor="let pr of this.conf.winkelWagen;">
+        <tr *ngFor="let pr of this.conf.winkelWagen; let i = index">
           <td class="col-sm-8 col-md-6">
             <div class="media">
               <a class="thumbnail pull-left"><img class="media-object" src="../../../assets/images/phones/{{pr.fotoPath}}" style="width: 55px; height: 72px;"> </a>
@@ -30,7 +30,7 @@
           <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs}}</td>
           <td class="col-sm-1 col-md-1 text-center">€ {{pr.prijs * pr.count}}</td>
           <td class="col-sm-1 col-md-1">
-            <button type="button" class="btn btn-danger" (click)="removeProduct(pr)">
+            <button type="button" class="btn btn-danger" (click)="removeProduct(pr, i)">
               <span class="glyphicon glyphicon-remove"></span> Verwijder
             </button>
           </td>
