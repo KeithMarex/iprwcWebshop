@@ -4,6 +4,8 @@ import {ConfigurationService} from "../../shared/configuration.service";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {CookieService} from 'ngx-cookie-service';
+import {constants} from 'perf_hooks';
+import NODE_PERFORMANCE_GC_MAJOR = module
 
 @Component({
   selector: 'app-winkelwagen',
@@ -49,9 +51,12 @@ export class WinkelwagenComponent implements OnInit {
         this.reloadPrice();
       });
     } else {
+      console.log(this.cookie.get('cart'))
       const json = JSON.parse(this.cookie.get('cart'));
       this.conf.winkelWagen.splice(index, 1);
-      delete json[index];
+      json['producten'].splice(index, 1);
+      console.log(JSON.stringify(json));
+      this.cookie.set('cart', JSON.stringify(json));
       console.log(json);
     }
 

@@ -56,8 +56,8 @@ export class LandingComponent implements OnInit {
     } else {
       this.conf.productenCount = 0;
       const json = JSON.parse(this.cookie.get('cart'));
-      for (let i = 0; i < Object.keys(json).length; i++) {
-        let data = json[i];
+      for (let i = 0; i < Object.keys(json['producten']).length; i++) {
+        let data = json['producten'][i];
         await this.http.get(this.conf.hostname + '/product/getProduct/' + data['product_id']).subscribe(responseData => {
           let data = JSON.parse(JSON.stringify(responseData))['result'][0];
           let productCookie = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], 1);
@@ -98,16 +98,19 @@ export class LandingComponent implements OnInit {
 
         let json = JSON.parse(this.cookie.get('cart'));
 
-        json[Object.keys(json).length] = newProduct;
+        console.log(json);
+        json['producten'].push(newProduct);
+        console.log(json);
 
         this.cookie.set('cart', JSON.stringify(json));
         Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
         this.laadWinkelWagen();
       } else {
-        const lijst = {};
-        lijst[0] = {
-          product_id: product.id,
-          count: 1
+        const lijst = {"producten":[
+          {
+            product_id: product.id,
+            count: 1
+          }]
         };
         this.cookie.set('cart', JSON.stringify(lijst));
         this.hc.telOp();
