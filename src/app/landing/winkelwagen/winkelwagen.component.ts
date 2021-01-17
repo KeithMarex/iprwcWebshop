@@ -4,8 +4,6 @@ import {ConfigurationService} from "../../shared/configuration.service";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {CookieService} from 'ngx-cookie-service';
-import {constants} from 'perf_hooks';
-import NODE_PERFORMANCE_GC_MAJOR = module
 
 @Component({
   selector: 'app-winkelwagen',
@@ -66,19 +64,37 @@ export class WinkelwagenComponent implements OnInit {
 
   changeAmount(product: cartProductModel, event){
     if (event.target.value >= 1){
-      for (let i = 0; i < this.conf.winkelWagen.length; i++){
-        if (this.conf.winkelWagen[i] === product){
-          this.conf.winkelWagen[i].count = event.target.value;
+      if (this.conf.user){
+        for (let i = 0; i < this.conf.winkelWagen.length; i++){
+          if (this.conf.winkelWagen[i] === product){
+            this.conf.winkelWagen[i].count = event.target.value;
+          }
         }
+
+        const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id, value: event.target.value}));
+
+        this.http.post(this.conf.hostname + '/cart/changeValue', postData).subscribe(responseData => {console.log(responseData)});
+        this.updateProducten.emit()
+
+        this.reloadPrice();
+      } else {
+        for (let i = 0; i < this.conf.winkelWagen.length; i++){
+          if (this.conf.winkelWagen[i] === product){
+            this.conf.winkelWagen[i].count = event.target.value;
+          }
+        }
+
+        const json = JSON.parse(this.cookie.get('cart'));
+        for (let i = 0; i < json['producten'].length; i++){
+          if (json['producten'][i].product_id === product.id){
+            json['producten'][i].count = Number(event.target.value);
+          }
+        }
+        console.log(json);
+        this.cookie.set('cart', JSON.stringify(json));
       }
-
-      const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id, productid: product.id, value: event.target.value}));
-
-      this.http.post(this.conf.hostname + '/cart/changeValue', postData).subscribe(responseData => {console.log(responseData)});
-      this.updateProducten.emit()
-
-      this.reloadPrice();
     }
+
 
     this.conf.productenCount = 0;
     for (let j = 0; j < this.conf.winkelWagen.length; j++){

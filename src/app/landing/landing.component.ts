@@ -53,17 +53,17 @@ export class LandingComponent implements OnInit {
           }
         }
       });
-    } else {
+    } else if (this.cookie.check('cart')) {
       this.conf.productenCount = 0;
       const json = JSON.parse(this.cookie.get('cart'));
       for (let i = 0; i < Object.keys(json['producten']).length; i++) {
         let data = json['producten'][i];
         await this.http.get(this.conf.hostname + '/product/getProduct/' + data['product_id']).subscribe(responseData => {
           let data = JSON.parse(JSON.stringify(responseData))['result'][0];
-          let productCookie = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], 1);
+          let productCookie = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], json['producten'][i].count);
           this.conf.winkelWagen.push(productCookie);
         })
-        this.conf.productenCount += 1;
+        this.conf.productenCount += json['producten'][i].count;
       }
     }
   }
