@@ -3,6 +3,7 @@ import {ConfigurationService} from "../../shared/configuration.service";
 import {CookieService} from "ngx-cookie-service";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {HttpClient} from "@angular/common/http";
+import {cartProductModel} from "../../shared/models/cartProduct.model";
 
 @Component({
   selector: 'app-account',
@@ -11,6 +12,9 @@ import {HttpClient} from "@angular/common/http";
 })
 export class AccountComponent implements OnInit {
   @Output() switchHome = new EventEmitter();
+  @Output() logOut = new EventEmitter();
+
+  public orders: cartProductModel[] = [];
 
   constructor(public conf: ConfigurationService, private cookie: CookieService, private http: HttpClient) { }
 
@@ -31,6 +35,9 @@ export class AccountComponent implements OnInit {
       timer: 1500
     })
     this.switchHome.emit();
+    this.conf.winkelWagen = [];
+    this.conf.productenCount = 0;
+    this.logOut.emit();
   }
 
   slaGegevensOp(postData: { inputEmail: string, inputVoornaam: string, inputAchternaam: string, inputStraat: string, inputHuisnummer: number, inputPlaats: string}) {

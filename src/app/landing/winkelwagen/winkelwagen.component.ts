@@ -55,14 +55,20 @@ export class WinkelwagenComponent implements OnInit {
       json['producten'].splice(index, 1);
       console.log(JSON.stringify(json));
       this.cookie.set('cart', JSON.stringify(json));
-      console.log(json);
+      Swal.fire({
+        backdrop: false,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Product verwijderd',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
-
-
     this.conf.productenCount = this.conf.productenCount - product.count
   }
 
-  changeAmount(product: cartProductModel, event){
+  changeAmount(product: cartProductModel, event, index){
     if (event.target.value >= 1){
       if (this.conf.user){
         for (let i = 0; i < this.conf.winkelWagen.length; i++){
@@ -93,6 +99,8 @@ export class WinkelwagenComponent implements OnInit {
         console.log(json);
         this.cookie.set('cart', JSON.stringify(json));
       }
+    } else if (event.target.value <= 0){
+      this.removeProduct(product, index);
     }
 
 
@@ -100,6 +108,7 @@ export class WinkelwagenComponent implements OnInit {
     for (let j = 0; j < this.conf.winkelWagen.length; j++){
       this.conf.productenCount = this.conf.productenCount + Number(this.conf.winkelWagen[j].count);
     }
+    this.reloadPrice();
   }
 
   bestel() {

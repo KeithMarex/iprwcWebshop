@@ -31,7 +31,7 @@
 </body>
 
 <body *ngIf="view === 'account'">
-  <app-account (switchHome)="this.view = 'product'"></app-account>
+  <app-account (switchHome)="this.view = 'product'" (logOut)="this.laadWinkelWagen()"></app-account>
 </body>
 
 <body *ngIf="view === 'cart'">
