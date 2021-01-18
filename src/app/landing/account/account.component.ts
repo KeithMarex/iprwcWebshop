@@ -3,6 +3,7 @@ import {ConfigurationService} from "../../shared/configuration.service";
 import {CookieService} from "ngx-cookie-service";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {HttpClient} from "@angular/common/http";
+import {OrderModel} from "../../shared/models/order.model";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
 
 @Component({
@@ -14,11 +15,22 @@ export class AccountComponent implements OnInit {
   @Output() switchHome = new EventEmitter();
   @Output() logOut = new EventEmitter();
 
-  public orders: cartProductModel[] = [];
+  public orders: OrderModel[] = [];
 
   constructor(public conf: ConfigurationService, private cookie: CookieService, private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.http.get(this.conf.hostname + '/order/get/' + this.conf.user.user_id).subscribe(responseData => {
+      const data = responseData['result'];
+      for (let i = 0; i < Object.keys(data).length; i++) {
+        let products: cartProductModel[] = [];
+        for (let j = 0; j < Object.keys(data[i]['json_agg']).length; j++) {
+          const d = data[i]['json_agg'][j];
+          products.push(new cartProductModel(d['product_id'], d['product_foto_path'], d['beschrijving'], d['voorraad'], d['prijs'], d['titel'], d['count']))
+        }
+        this.orders.push(new OrderModel(data[i]['order_id'], products));
+      }
+    })
   }
 
   logUit() {
@@ -65,6 +77,14 @@ export class AccountComponent implements OnInit {
         })
       }
     });
+  }
+
+  getTotalPrice(order: OrderModel): number {
+    let totalPrice = 0;
+    for (const i of order.producten){
+      totalPrice += i.prijs * i.count;
+    }
+    return totalPrice;
   }
 
   veranderWachtwoord() {

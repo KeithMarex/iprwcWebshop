@@ -82,15 +82,62 @@
               </form>
               <hr>
               <div class="col-8">
-                <h3 class="mb-0">Gemaakte bestellingen</h3>
+                <h3 class="mb-0">Geplaatste bestellingen</h3>
               </div>
+              <br>
               <div class="container">
                 <h1 style="text-align: center" class="no-orders" *ngIf="!(this.orders.length >= 1)">Je hebt nog geen bestellingen geplaatst</h1>
                 <div *ngIf="this.orders.length >= 1">
-                  <div class="jumbotron">
-                    <h1>Hello, world!</h1>
-                    <p>...</p>
-                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                  <div class="jumbotron jumbo" *ngFor="let i of this.orders">
+                    <h3>Factuurnummer: {{i.orderId}}</h3>
+                    <div class="container">
+                      <table class="table" *ngIf="this.conf.winkelWagen.length !== 0">
+                        <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th class="text-center">Aantal</th>
+                          <th class="text-center">Prijs</th>
+                          <th class="text-center">Totaal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--          NgFor for products in cart -->
+                        <tr *ngFor="let j of i.producten">
+                          <td class="col-sm-8 col-md-6">
+                            <div class="media">
+                              <a class="thumbnail pull-left"><img class="media-object" src="../../../assets/images/phones/{{j.fotoPath}}" style="width: 55px; height: 72px;"> </a>
+                              <div class="media-body" style="padding-left: 20px">
+                                <h4 class="media-heading"><a style="cursor:pointer;">{{j.titel}}</a></h4>
+                                <span>Status: </span><span class="text-success">Op voorraad</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="col-sm-1 col-md-1" style="text-align: center">{{j.count}}</td>
+                          <td class="col-sm-1 col-md-1 text-center">€ {{j.prijs}}</td>
+                          <td class="col-sm-2 col-md-2 text-center">€ {{j.prijs * j.count}}</td>
+                        </tr>
+
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td><h5>Subtotaal</h5></td>
+                          <td class="text-right"><h5>€ {{ this.getTotalPrice(i) }}</h5></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td><h5>Geschatte verzendkosten</h5></td>
+                          <td class="text-right"><h5>€ 6,75</h5></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td><h3>Totaal</h3></td>
+                          <td class="text-right"><h3>€ {{ this.getTotalPrice(i) + 6.75}}</h3></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>

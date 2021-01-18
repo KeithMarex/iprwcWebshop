@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
         this.cookieService.set('iprwcLoginEmail', postData.email);
         this.cookieService.set('iprwcLoginPassword', postData.wachtwoord);
         const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
-        this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
+        this.conf.user = new UserModel(userData['user_id'], userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
         Swal.fire({
           backdrop: false,
           position: 'top-end',

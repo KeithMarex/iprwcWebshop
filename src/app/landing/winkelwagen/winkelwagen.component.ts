@@ -4,6 +4,7 @@ import {ConfigurationService} from "../../shared/configuration.service";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {CookieService} from 'ngx-cookie-service';
+import {OrderModel} from "../../shared/models/order.model";
 
 @Component({
   selector: 'app-winkelwagen',

@@ -1,4 +1,5 @@
 export class UserModel{
+  public user_id: string;
   public cart_id: string;
   public voornaam: string;
   public achternaam: string;
@@ -7,7 +8,8 @@ export class UserModel{
   public huisnummer: number;
   public plaatsnaam: string;
 
-  constructor(cart_id: string, voornaam: string, achternaam: string, email: string, straatnaam: string, huisnummer: number, plaatsnaam: string) {
+  constructor(user_id: string, cart_id: string, voornaam: string, achternaam: string, email: string, straatnaam: string, huisnummer: number, plaatsnaam: string) {
+    this.user_id = user_id;
     this.cart_id = cart_id;
     this.voornaam = voornaam;
     this.achternaam = achternaam;

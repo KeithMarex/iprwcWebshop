@@ -27,10 +27,10 @@ export class HeaderComponent implements OnInit {
     if (this.cookieService.get('iprwcLoginEmail') !== ''){
       const postData = JSON.parse(JSON.stringify({email: this.cookieService.get('iprwcLoginEmail'), wachtwoord: this.cookieService.get('iprwcLoginPassword')}));
 
-      this.http.post(this.conf.hostname + '/user/checkUserLogin', postData).subscribe(responseData => {console.log(responseData);
+      this.http.post(this.conf.hostname + '/user/checkUserLogin', postData).subscribe(responseData => {
         if (JSON.parse(JSON.stringify(responseData))['login'] === true){
           const userData = JSON.parse(JSON.stringify(responseData))['result'][0];
-          this.conf.user = new UserModel(userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
+          this.conf.user = new UserModel(userData['user_id'], userData['cart_id'], userData['voornaam'], userData['achternaam'], userData['email'], userData['straatnaam'], Number(userData['huisnummer']), userData['plaatsnaam']);
           this.setName();
           this.laadWinkelWagen.emit();
         }
