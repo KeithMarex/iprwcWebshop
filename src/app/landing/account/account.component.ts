@@ -20,6 +20,10 @@ export class AccountComponent implements OnInit {
   constructor(public conf: ConfigurationService, private cookie: CookieService, private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  refresh(): void {
     this.http.get(this.conf.hostname + '/order/get/' + this.conf.user.user_id).subscribe(responseData => {
       const data = responseData['result'];
       for (let i = 0; i < Object.keys(data).length; i++) {
@@ -28,7 +32,7 @@ export class AccountComponent implements OnInit {
           const d = data[i]['json_agg'][j];
           products.push(new cartProductModel(d['product_id'], d['product_foto_path'], d['beschrijving'], d['voorraad'], d['prijs'], d['titel'], d['count']))
         }
-        this.orders.push(new OrderModel(data[i]['order_id'], products));
+        this.orders.push(new OrderModel(data[i]['order_id'], products, data[i]['timestamp'], data[i]['tracking_status']));
       }
     })
   }
@@ -134,5 +138,85 @@ export class AccountComponent implements OnInit {
         }
       }
     });
+  }
+
+  getOrder() {
+    Swal.fire({
+      title: 'Vul factuurnummer in',
+      input: 'text',
+      inputLabel: 'Factuurnummer',
+      inputPlaceholder: 'Factuurnummer...'
+    }).then(result => {
+
+    })
+  }
+
+  deleteUser() {
+    Swal.fire({
+      title: 'Vul een gebruikers ID in',
+      input: 'text',
+      inputLabel: 'GebruikersID',
+      inputPlaceholder: 'GebruikersID...'
+    }).then(result => {
+
+    })
+  }
+
+  deleteProduct() {
+    let options = {};
+
+    Swal.fire({
+      title: 'Verwijder een product',
+      inputLabel: 'Kies een product',
+      input: 'select',
+      inputOptions: options,
+    }).then(result => {
+
+    })
+  }
+
+  editProduct() {
+    let options = {};
+
+    Swal.fire({
+      title: 'Pas een product aan',
+      inputLabel: 'Kies een product',
+      input: 'select',
+      inputOptions: options,
+    }).then(result => {
+
+    })
+  }
+
+  addProduct() {
+    Swal.fire({
+      title: 'Voeg een product toe',
+      html: `
+        <h3>Titel</h3>
+        <input id="swal-input1" class="swal2-input">
+        <h3>Beschrijving</h3>
+        <input id="swal-input2" class="swal2-input">
+        <h3>Prijs</h3>
+        <input id="swal-input3" class="swal2-input">
+        <h3>Voorraad</h3>
+        <input id="swal-input4" class="swal2-input">
+        <h3>Foto pad</h3>
+        <input id="swal-input5" class="swal2-input">`,
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement).value,
+          (document.getElementById('swal-input2') as HTMLInputElement).value,
+          (document.getElementById('swal-input3') as HTMLInputElement).value,
+          (document.getElementById('swal-input4') as HTMLInputElement).value,
+          (document.getElementById('swal-input5') as HTMLInputElement).value,
+        ]
+      }
+    }).then(result => {
+      console.log(result.value);
+      this.http.post(this.conf.hostname + '/product/create', { titel: result.value[0], beschrijving: result.value[1], prijs: result.value[2], voorraad: result.value[3], product_foto_path: result.value[4]}).subscribe(res => {
+        console.log(res);
+      })
+    })
   }
 }

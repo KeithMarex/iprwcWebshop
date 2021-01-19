@@ -89,9 +89,11 @@
                 <h1 style="text-align: center" class="no-orders" *ngIf="!(this.orders.length >= 1)">Je hebt nog geen bestellingen geplaatst</h1>
                 <div *ngIf="this.orders.length >= 1">
                   <div class="jumbotron jumbo" *ngFor="let i of this.orders">
-                    <h3>Factuurnummer: {{i.orderId}}</h3>
+                    <h3 class="text-center">Factuurnummer: {{i.orderId}}</h3>
+                    <h4 class="text-center">Datum: {{i.timestamp}}</h4>
+                    <h4 class="text-center">Tracking: {{i.tracking_status}}</h4>
                     <div class="container">
-                      <table class="table" *ngIf="this.conf.winkelWagen.length !== 0">
+                      <table class="table">
                         <thead>
                         <tr>
                           <th>Product</th>
@@ -141,9 +143,44 @@
                   </div>
                 </div>
               </div>
-
+              <hr>
+              <div *ngIf="this.conf.user.user_id === '2a8ad977-59c0-4c75-9c51-968407ae4c05'">
+                <div class="col-8">
+                  <h3 class="mb-0">Administrator </h3>
+                </div>
+                <br>
+                <div class="jumbotron">
+                  <div class="row">
+                    <h3>Producten</h3>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-4 text-center">
+                      <button class="btn btn-primary" (click)="addProduct()">Product toevoegen</button>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <button class="btn btn-warning" (click)="editProduct()">Product aanpassen</button>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <button class="btn btn-danger" (click)="deleteProduct()">Product verwijderen</button>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <h3>Klanten</h3>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-6 text-center">
+                      <button class="btn btn-primary" (click)="deleteUser()">Klant verwijderen</button>
+                    </div>
+                    <div class="col-md-6 text-center">
+                      <button class="btn btn-warning" (click)="getOrder()">Order ophalen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
           </div>
         </div>
       </div>

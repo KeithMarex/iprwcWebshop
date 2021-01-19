@@ -5,6 +5,8 @@ import {cartProductModel} from "../../shared/models/cartProduct.model";
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {CookieService} from 'ngx-cookie-service';
 import {OrderModel} from "../../shared/models/order.model";
+import {Router} from '@angular/router';
+import {AccountComponent} from '../account/account.component';
 
 @Component({
   selector: 'app-winkelwagen',
@@ -15,7 +17,7 @@ export class WinkelwagenComponent implements OnInit {
   TotalAmount = 0;
   @Output() updateProducten = new EventEmitter();
 
-  constructor(private http: HttpClient, public conf: ConfigurationService, private cookie: CookieService) { }
+  constructor(private http: HttpClient, public conf: ConfigurationService, private cookie: CookieService, private route: Router) { }
 
   ngOnInit(): void{
     this.TotalAmount = 0;
@@ -113,46 +115,70 @@ export class WinkelwagenComponent implements OnInit {
   }
 
   bestel() {
-    let timerInterval
-    Swal.fire({
-      title: 'Bestelling wordt verwerkt',
-      timer: 1000,
-      didOpen: () => {
-        Swal.showLoading()
-        timerInterval = setInterval(() => {
-        }, 100)
-      },
-      willClose: () => {
-        clearInterval(timerInterval)
-      }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      for (let i = 0; i < this.conf.winkelWagen.length; i++) {
-        this.conf.winkelWagen.splice(i);
-      }
-      this.reloadPrice();
-
-      if (this.cookie.check('cart')){
-        this.cookie.delete('cart');
-        this.conf.productenCount = 0;
-      }
-
-      let timerInterval2
+    if (this.conf.user){
+      let timerInterval;
       Swal.fire({
-        position: 'top-end',
-        backdrop: false,
-        icon: 'success',
-        title: 'Bestelling voltooid',
-        timer: 3000,
-        showConfirmButton: false,
+        title: 'Bestelling wordt verwerkt',
+        timer: 1000,
         didOpen: () => {
-          timerInterval2 = setInterval(() => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
           }, 100)
         },
         willClose: () => {
-          clearInterval(timerInterval2);
+          clearInterval(timerInterval);
+
+        }
+      }).then(async (result) => {
+        await this.http.post(this.conf.hostname + '/order/create', {user_id: this.conf.user.user_id}).subscribe(async postData => {
+          const orderId = postData['order_id'];
+          for (const i of this.conf.winkelWagen){
+            await this.http.post(this.conf.hostname + '/order/add', {order_id: orderId, product_id: i.id, count: i.count}).subscribe(async res => {
+              await this.http.post(this.conf.hostname + '/cart/deleteProduct', {cartid: this.conf.user.cart_id, productid: i.id}).subscribe(io => {
+                // Do something
+              });
+            });
+          }
+
+          /* Read more about handling dismissals below */
+          for (let i = 0; i < this.conf.winkelWagen.length; i++) {
+            this.conf.winkelWagen.splice(i);
+          }
+          this.reloadPrice();
+
+          if (this.cookie.check('cart')){
+            this.cookie.delete('cart');
+            this.conf.productenCount = 0;
+          }
+
+          let timerInterval2;
+          Swal.fire({
+            position: 'top-end',
+            backdrop: false,
+            icon: 'success',
+            title: 'Bestelling voltooid',
+            timer: 3000,
+            showConfirmButton: false,
+            didOpen: () => {
+              timerInterval2 = setInterval(() => {
+              }, 100)
+            },
+            willClose: () => {
+              clearInterval(timerInterval2);
+            }
+          })
+        })
+      })
+    } else {
+      Swal.fire({
+        title: 'Bestellen',
+        text: 'Je moet inloggen om een bestelling te kunnen plaatsen!',
+        icon: 'info',
+      }).then(result => {
+        if (result.isConfirmed){
+          this.route.navigate(['klantenpaneel']);
         }
       })
-    })
+    }
   }
 }

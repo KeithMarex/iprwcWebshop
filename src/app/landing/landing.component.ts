@@ -40,8 +40,10 @@ export class LandingComponent implements OnInit {
     this.conf.winkelWagen.length = 0;
 
     if (this.conf.user) {
+      this.conf.productenCount = 0;
       const postData = JSON.parse(JSON.stringify({cartid: this.conf.user.cart_id}));
       this.http.post(this.conf.hostname + '/cart/getProducts', postData).subscribe(responseData => {
+        this.conf.winkelWagen.length = 0;
         for (let i = 0; i < responseData['result'].length; i++) {
           let data = JSON.parse(JSON.stringify(responseData))['result'][i];
           let product = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], Number(data['count']));
@@ -55,6 +57,7 @@ export class LandingComponent implements OnInit {
       });
     } else if (this.cookie.check('cart')) {
       this.conf.productenCount = 0;
+      this.conf.winkelWagen.length = 0;
       const json = JSON.parse(this.cookie.get('cart'));
       for (let i = 0; i < Object.keys(json['producten']).length; i++) {
         let data = json['producten'][i];
