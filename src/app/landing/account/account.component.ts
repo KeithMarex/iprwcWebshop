@@ -5,6 +5,7 @@ import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
 import {HttpClient} from "@angular/common/http";
 import {OrderModel} from "../../shared/models/order.model";
 import {cartProductModel} from "../../shared/models/cartProduct.model";
+import {ProductModel} from '../../shared/models/product.model';
 
 @Component({
   selector: 'app-account',
@@ -162,17 +163,34 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  deleteProduct() {
+  async deleteProduct(): Promise<void> {
     let options = {};
+    let products: ProductModel[] = [];
 
-    Swal.fire({
-      title: 'Verwijder een product',
-      inputLabel: 'Kies een product',
-      input: 'select',
-      inputOptions: options,
-    }).then(result => {
+    await this.http.get(this.conf.hostname + '/product/get/all').subscribe(responseData => {
+      let data = JSON.parse(JSON.stringify(responseData))['result'];
+      for (let i = 0; i < data.length; i++) {
+        let model = new ProductModel(data[i]['product_id'], data[i]['titel'], data[i]['beschrijving'], Number(data[i]['voorraad']), Number(data[i]['prijs']), data[i]['product_foto_path']);
+        products.push(model);
+      }
 
-    })
+      for (const i of products) {
+        options[i.id] = i.titel;
+      }
+
+      Swal.fire({
+        title: 'Verwijder een product',
+        inputLabel: 'Kies een product',
+        input: 'select',
+        inputOptions: options,
+      }).then(result => {
+        if (result['delete']){
+          this.http.post(this.conf.hostname + '/product/delete', {product_id: result.value}).subscribe(reactie => {
+            Swal.fire({title: 'Product', text: 'Verwijderd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          })
+        }
+      })
+    });
   }
 
   editProduct() {
@@ -213,9 +231,10 @@ export class AccountComponent implements OnInit {
         ]
       }
     }).then(result => {
-      console.log(result.value);
       this.http.post(this.conf.hostname + '/product/create', { titel: result.value[0], beschrijving: result.value[1], prijs: result.value[2], voorraad: result.value[3], product_foto_path: result.value[4]}).subscribe(res => {
-        console.log(res);
+        if (res['create']){
+          Swal.fire({title: 'Product', text: 'Aangemaakt', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+        }
       })
     })
   }

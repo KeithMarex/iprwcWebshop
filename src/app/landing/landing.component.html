@@ -19,7 +19,9 @@
           <img src="../../assets/images/phones/{{product.foto_path}}" alt="..." style="height: 170px">
           <div class="caption">
             <h3>{{product.titel}}</h3>
-            <p>{{product.prijs}},-</p>
+            <p><strong>{{product.prijs}},-</strong></p>
+            <p>{{product.beschrijving}}</p>
+            <hr>
             <p><a class="btn btn-primary fw" role="button" (click)="voegToeAanCart(product)">In mijn winkelwagen</a></p>
           </div>
         </div>
