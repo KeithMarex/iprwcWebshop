@@ -159,7 +159,7 @@ export class AccountComponent implements OnInit {
             const d = data[i]['json_agg'][j];
             products.push(new cartProductModel(d['product_id'], d['product_foto_path'], d['beschrijving'], d['voorraad'], d['prijs'], d['titel'], d['count']));
           }
-          orders2.push(new OrderModel(data[i]['order_id'], products, data[i]['timestamp'], data[i]['tracking_status']));
+          this.order.push(new OrderModel(data[i]['order_id'], products, data[i]['timestamp'], data[i]['tracking_status']));
         }
         console.log(orders2);
       })
