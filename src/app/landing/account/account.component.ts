@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit {
   @Output() logOut = new EventEmitter();
 
   public orders: OrderModel[] = [];
+  public order: OrderModel[] = [];
 
   constructor(public conf: ConfigurationService, private cookie: CookieService, private http: HttpClient) { }
 
@@ -148,7 +149,20 @@ export class AccountComponent implements OnInit {
       inputLabel: 'Factuurnummer',
       inputPlaceholder: 'Factuurnummer...'
     }).then(result => {
+      let orders2: OrderModel[] = [];
 
+      this.http.get(this.conf.hostname + '/order/getById/' + result.value).subscribe(responseData => {
+        const data = responseData['result'];
+        for (let i = 0; i < Object.keys(data).length; i++) {
+          let products: cartProductModel[] = [];
+          for (let j = 0; j < Object.keys(data[i]['json_agg']).length; j++) {
+            const d = data[i]['json_agg'][j];
+            products.push(new cartProductModel(d['product_id'], d['product_foto_path'], d['beschrijving'], d['voorraad'], d['prijs'], d['titel'], d['count']));
+          }
+          orders2.push(new OrderModel(data[i]['order_id'], products, data[i]['timestamp'], data[i]['tracking_status']));
+        }
+        console.log(orders2);
+      })
     })
   }
 
