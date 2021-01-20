@@ -153,14 +153,31 @@ export class AccountComponent implements OnInit {
   }
 
   deleteUser() {
-    Swal.fire({
-      title: 'Vul een gebruikers ID in',
-      input: 'text',
-      inputLabel: 'GebruikersID',
-      inputPlaceholder: 'GebruikersID...'
-    }).then(result => {
+    let options = {};
 
-    })
+    this.http.get(this.conf.hostname + '/user/all').subscribe(responseData => {
+      let d = JSON.parse(JSON.stringify(responseData));
+      let data = d['result'];
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        options[data[i]['user_id']] = data[i]['voornaam'] + ' ' + data[i]['achternaam'];
+      }
+
+      Swal.fire({
+        title: 'Verwijder een gebruiker',
+        inputLabel: 'Kies een gebruiker',
+        input: 'select',
+        inputOptions: options,
+      }).then(result => {
+        this.http.post(this.conf.hostname + '/user/delete', {user_id: result.value}).subscribe(respone => {
+          if (respone['succes']){
+            Swal.fire({title: 'Gebruiker', text: 'Verwijderd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          } else {
+            Swal.fire({title: 'Product', text: 'Niet verwijderd', icon: 'error', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          }
+        })
+      })
+    });
   }
 
   deleteProduct(): void {
