@@ -33,13 +33,13 @@ const appRoutes: Routes = [
     PasswordForgetComponent,
     RegisterComponent,
     WinkelwagenComponent,
-    AccountComponent
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [ConfigurationService, CookieService, HeaderComponent],
   bootstrap: [AppComponent]

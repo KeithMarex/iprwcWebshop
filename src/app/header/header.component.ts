@@ -20,6 +20,8 @@ export class HeaderComponent implements OnInit {
   @Output() WinkelwagenView = new EventEmitter();
   @Output() searchProduct = new EventEmitter<any>();
   userName: string;
+  public isCollapsed = false;
+  collapsed = true;
 
   constructor(public conf: ConfigurationService, private route: Router, private cookieService: CookieService, private http: HttpClient) { }
 

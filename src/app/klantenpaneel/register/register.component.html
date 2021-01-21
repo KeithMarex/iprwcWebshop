@@ -4,33 +4,33 @@
 <form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
   <label for="voornaam">Voornaam</label>
   <div class="form-group mb3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="voornaam" required ngModel name="voornaam"/>
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="voornaam" required ngModel name="voornaam" placeholder="Uw voornaam..."/>
   </div>
   <label for="achternaam">Achternaam</label>
   <div class="form-group mb-3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="achternaam" required ngModel name="achternaam"/>
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="achternaam" required ngModel name="achternaam" placeholder="Uw achternaam..." />
   </div>
   <hr>
   <label for="email">Email</label>
   <div class="form-group mb-3">
-    <input type="email" [ngClass]="{'failure': !succes}" class="form-control" id="email" required ngModel name="email"/>
+    <input type="email" [ngClass]="{'failure': !succes}" class="form-control" id="email" required ngModel name="email" placeholder="Uw emailadres..."/>
   </div>
   <label for="wachtwoord">Wachtwoord</label>
   <div class="form-group mb-3">
-    <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="wachtwoord" required ngModel name="wachtwoord"/>
+    <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="wachtwoord" required ngModel name="wachtwoord" placeholder="Kies een wachtwoord..."/>
   </div>
   <hr>
   <label for="straatnaam">Straatnaam</label>
   <div class="form-group mb-3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="straatnaam" required ngModel name="straatnaam"/>
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="straatnaam" required ngModel name="straatnaam" placeholder="Uw straatnaam..."/>
   </div>
   <label for="huisnummer">Huisnummer</label>
   <div class="form-group mb-3">
-    <input type="number" [ngClass]="{'failure': !succes}" class="form-control" id="huisnummer" required ngModel name="huisnummer"/>
+    <input type="number" [ngClass]="{'failure': !succes}" class="form-control" id="huisnummer" required ngModel name="huisnummer" placeholder="Uw huisnummer..."/>
   </div>
   <label for="plaatsnaam">Plaatsnaam</label>
   <div class="form-group mb-3">
-    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="plaatsnaam" required ngModel name="plaatsnaam"/>
+    <input type="text" [ngClass]="{'failure': !succes}" class="form-control" id="plaatsnaam" required ngModel name="plaatsnaam" placeholder="Uw plaatsnaam..."/>
   </div>
 
   <div class="row clearfix das">
