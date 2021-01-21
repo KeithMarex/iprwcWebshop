@@ -129,14 +129,24 @@ export class LandingComponent implements OnInit {
 
         let json = JSON.parse(this.cookie.get('cart'));
 
-        console.log(json);
-        json['producten'].push(newProduct);
-        console.log(json);
+        let inCart = false;
+        for (const i of json['producten']){
+          if (i['product_id'] === product.id){
+            inCart = true;
+            i['count'] = i['count'] + 1;
+            break;
+          }
+        }
+
+        if (!inCart){
+          json['producten'].push(newProduct);
+        }
 
         this.cookie.set('cart', JSON.stringify(json));
         Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
         this.laadWinkelWagen();
-      } else {
+      }
+      else {
         const lijst = {"producten":[
           {
             product_id: product.id,
