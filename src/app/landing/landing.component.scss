@@ -83,7 +83,16 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: v
     width: 77.06vw;
   }
 
+  .row {
+    display: block;
+  }
+
   .mobile {
     display: none;
+  }
+
+  .mobile2{
+    align-items: center;
+    justify-content: center;
   }
 }

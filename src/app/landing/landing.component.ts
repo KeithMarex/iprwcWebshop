@@ -54,6 +54,34 @@ export class LandingComponent implements OnInit {
             this.conf.productenCount = this.conf.productenCount + this.conf.winkelWagen[j].count;
           }
         }
+
+        if (this.cookie.check('cart') && this.conf.winkelWagen.length >= 1){
+          Swal.fire({
+            title: 'Winkelwagen',
+            text: 'Wilt u uw online winkelwagen laden of die op uw apparaat?',
+            showDenyButton: true,
+            confirmButtonText: `Online`,
+            denyButtonText: `Lokaal`,
+          }).then(res => {
+            if (res.isConfirmed){
+              // Do nothing
+            } else if (res.isDenied){
+              this.conf.productenCount = 0;
+              this.conf.winkelWagen.length = 0;
+              const json = JSON.parse(this.cookie.get('cart'));
+              for (let i = 0; i < Object.keys(json['producten']).length; i++) {
+                let data = json['producten'][i];
+                this.http.get(this.conf.hostname + '/product/getProduct/' + data['product_id']).subscribe(responseData => {
+                  let data = JSON.parse(JSON.stringify(responseData))['result'][0];
+                  let productCookie = new cartProductModel(data['product_id'], data['product_foto_path'], data['beschrijving'], data['voorraad'], data['prijs'], data['titel'], json['producten'][i].count);
+                  this.conf.winkelWagen.push(productCookie);
+                })
+                this.conf.productenCount += json['producten'][i].count;
+              }
+            }
+          })
+        }
+
       });
     } else if (this.cookie.check('cart')) {
       this.conf.productenCount = 0;
@@ -101,14 +129,24 @@ export class LandingComponent implements OnInit {
 
         let json = JSON.parse(this.cookie.get('cart'));
 
-        console.log(json);
-        json['producten'].push(newProduct);
-        console.log(json);
+        let inCart = false;
+        for (const i of json['producten']){
+          if (i['product_id'] === product.id){
+            inCart = true;
+            i['count'] = i['count'] + 1;
+            break;
+          }
+        }
+
+        if (!inCart){
+          json['producten'].push(newProduct);
+        }
 
         this.cookie.set('cart', JSON.stringify(json));
         Swal.fire({title: product.titel, text: 'Toegevoegd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
         this.laadWinkelWagen();
-      } else {
+      }
+      else {
         const lijst = {"producten":[
           {
             product_id: product.id,

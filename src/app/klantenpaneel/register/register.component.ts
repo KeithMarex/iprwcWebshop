@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {ConfigurationService} from '../../shared/configuration.service';
 import Swal from 'node_modules/sweetalert2/dist/sweetalert2.js'
+import {ensureOriginalSegmentLinks} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/source_file";
 
 
 @Component({
@@ -24,8 +25,10 @@ export class RegisterComponent implements OnInit {
     this.http.post(this.conf.hostname + '/user/create', postData).subscribe(responseData => {
       if (JSON.parse(JSON.stringify(responseData))['create'] === true){
         this.gaNaarLogin()
-        Swal.fire('Account aangemaakt', 'Je hebt een account succesvol aangemaakt.', 'success');
+        Swal.fire('Account aangemaakt', 'Je hebt een account succesvol aangemaakt', 'success');
       };
+    }, error => {
+      Swal.fire('Email', 'Dit email adres is al in gebruik', 'error');
     });
   }
 

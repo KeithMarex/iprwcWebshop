@@ -7,11 +7,11 @@
     <form #postForm="ngForm" (ngSubmit)="onFormSubmit(postForm.value)" class="text-center">
       <label for="title">Email</label>
       <div class="form-group mb3">
-        <input type="email" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email"/>
+        <input type="email" [ngClass]="{'failure': !succes}" class="form-control" id="title" required ngModel name="email" placeholder="Uw email..."/>
       </div>
       <label for="wachtwoord">Wachtwoord</label>
       <div class="form-group mb-3">
-        <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="wachtwoord" required ngModel name="wachtwoord"/>
+        <input type="password" [ngClass]="{'failure': !succes}" class="form-control" id="wachtwoord" required ngModel name="wachtwoord"  placeholder="Uw wachtwoord..."/>
       </div>
 
       <div class="row clearfix das">

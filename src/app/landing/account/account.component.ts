@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit {
   @Output() logOut = new EventEmitter();
 
   public orders: OrderModel[] = [];
+  public order: OrderModel[] = [];
 
   constructor(public conf: ConfigurationService, private cookie: CookieService, private http: HttpClient) { }
 
@@ -148,26 +149,56 @@ export class AccountComponent implements OnInit {
       inputLabel: 'Factuurnummer',
       inputPlaceholder: 'Factuurnummer...'
     }).then(result => {
+      let orders2: OrderModel[] = [];
 
+      this.http.get(this.conf.hostname + '/order/getById/' + result.value).subscribe(responseData => {
+        const data = responseData['result'];
+        for (let i = 0; i < Object.keys(data).length; i++) {
+          let products: cartProductModel[] = [];
+          for (let j = 0; j < Object.keys(data[i]['json_agg']).length; j++) {
+            const d = data[i]['json_agg'][j];
+            products.push(new cartProductModel(d['product_id'], d['product_foto_path'], d['beschrijving'], d['voorraad'], d['prijs'], d['titel'], d['count']));
+          }
+          this.order.push(new OrderModel(data[i]['order_id'], products, data[i]['timestamp'], data[i]['tracking_status']));
+        }
+        console.log(orders2);
+      })
     })
   }
 
   deleteUser() {
-    Swal.fire({
-      title: 'Vul een gebruikers ID in',
-      input: 'text',
-      inputLabel: 'GebruikersID',
-      inputPlaceholder: 'GebruikersID...'
-    }).then(result => {
+    let options = {};
 
-    })
+    this.http.get(this.conf.hostname + '/user/all').subscribe(responseData => {
+      let d = JSON.parse(JSON.stringify(responseData));
+      let data = d['result'];
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        options[data[i]['user_id']] = data[i]['voornaam'] + ' ' + data[i]['achternaam'];
+      }
+
+      Swal.fire({
+        title: 'Verwijder een gebruiker',
+        inputLabel: 'Kies een gebruiker',
+        input: 'select',
+        inputOptions: options,
+      }).then(result => {
+        this.http.post(this.conf.hostname + '/user/delete', {user_id: result.value}).subscribe(respone => {
+          if (respone['succes']){
+            Swal.fire({title: 'Gebruiker', text: 'Verwijderd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          } else {
+            Swal.fire({title: 'Product', text: 'Niet verwijderd', icon: 'error', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+          }
+        })
+      })
+    });
   }
 
-  async deleteProduct(): Promise<void> {
+  deleteProduct(): void {
     let options = {};
     let products: ProductModel[] = [];
 
-    await this.http.get(this.conf.hostname + '/product/get/all').subscribe(responseData => {
+    this.http.get(this.conf.hostname + '/product/get/all').subscribe(responseData => {
       let data = JSON.parse(JSON.stringify(responseData))['result'];
       for (let i = 0; i < data.length; i++) {
         let model = new ProductModel(data[i]['product_id'], data[i]['titel'], data[i]['beschrijving'], Number(data[i]['voorraad']), Number(data[i]['prijs']), data[i]['product_foto_path']);
@@ -195,15 +226,67 @@ export class AccountComponent implements OnInit {
 
   editProduct() {
     let options = {};
+    let products: ProductModel[] = [];
 
-    Swal.fire({
-      title: 'Pas een product aan',
-      inputLabel: 'Kies een product',
-      input: 'select',
-      inputOptions: options,
-    }).then(result => {
+    this.http.get(this.conf.hostname + '/product/get/all').subscribe(responseData => {
+      let data = JSON.parse(JSON.stringify(responseData))['result'];
+      for (let i = 0; i < data.length; i++) {
+        let model = new ProductModel(data[i]['product_id'], data[i]['titel'], data[i]['beschrijving'], Number(data[i]['voorraad']), Number(data[i]['prijs']), data[i]['product_foto_path']);
+        products.push(model);
+      }
 
-    })
+      for (const i of products) {
+        options[i.id] = i.titel;
+      }
+
+      Swal.fire({
+        title: 'Wijzig een product',
+        inputLabel: 'Kies een product',
+        input: 'select',
+        inputOptions: options,
+      }).then(result => {
+        if (result.isConfirmed){
+          this.http.get(this.conf.hostname + '/product/getProduct/' + result.value).subscribe(res => {
+            let product = res['result'][0];
+            console.log(product);
+
+            Swal.fire({
+              title: 'Multiple inputs',
+              html:`
+                <h3>Titel</h3>
+                <input id="swal-input1" class="swal2-input" value="${product['titel']}">
+                <h3>Beschrijving</h3>
+                <input id="swal-input2" class="swal2-input" value="${product['beschrijving']}">
+                <h3>Prijs</h3>
+                <input id="swal-input3" class="swal2-input" value="${product['prijs']}">
+                <h3>Voorraad</h3>
+                <input id="swal-input4" class="swal2-input" value="${product['voorraad']}">
+                <h3>Foto pad</h3>
+                <input id="swal-input5" class="swal2-input" value="${product['product_foto_path']}">`,
+              focusConfirm: false,
+              preConfirm: () => {
+                return [
+                  (document.getElementById('swal-input1') as HTMLInputElement).value,
+                  (document.getElementById('swal-input2') as HTMLInputElement).value,
+                  (document.getElementById('swal-input3') as HTMLInputElement).value,
+                  (document.getElementById('swal-input4') as HTMLInputElement).value,
+                  (document.getElementById('swal-input5') as HTMLInputElement).value,
+                ]
+              }
+            })
+            .then(result2 => {
+              this.http.post(this.conf.hostname + '/product/update', {product_id: result.value, beschrijving: result2.value[1], prijs: result2.value[2], voorraad: result2.value[3], product_foto_path: result2.value[4], titel: result2.value[0]}).subscribe(end => {
+                if (end['update'] === true){
+                  Swal.fire({title: 'Product', text: 'Veranderd', icon: 'success', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+                } else {
+                  Swal.fire({title: 'Product', text: 'Niet veranderd', icon: 'error', position: 'top-end', showConfirmButton: false, backdrop: false, allowOutsideClick: false, timer: 1500});
+                }
+              })
+            })
+          });
+        }
+      })
+    });
   }
 
   addProduct() {
